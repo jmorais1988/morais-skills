@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # for the keep-alive step
 
 concurrency:
   group: sync-anymachine
@@ -33,3 +34,12 @@ jobs:
           git add .agents/skills/anymachine
           git commit -m "Sync anymachine PIPELINE.md to apekshik/anymachine@${commit:0:7}"
           git push
+
+      # GitHub disables scheduled workflows after 60 days without repo activity,
+      # and this job rarely commits. Re-enabling it through the API each run
+      # resets that timer (the same trick keepalive-workflow uses).
+      - name: Keep the schedule alive
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/sync-anymachine.yml/enable"

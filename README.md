@@ -15,6 +15,6 @@ Personal collection of AI agent skills. Each skill lives in `.agents/skills/<nam
 
 | Skill | Upstream | Synced files | How |
 | --- | --- | --- | --- |
-| `anymachine` | [apekshik/anymachine](https://github.com/apekshik/anymachine) (MIT) | `PIPELINE.md` (verbatim; commit in `UPSTREAM`) | `.github/workflows/sync-anymachine.yml` runs `scripts/sync-anymachine.sh` daily and commits to `main` when `PIPELINE.md` changes |
+| `anymachine` | [apekshik/anymachine](https://github.com/apekshik/anymachine) (MIT) | `PIPELINE.md` (verbatim; commit in `UPSTREAM`) | `.github/workflows/sync-anymachine.yml` runs `scripts/sync-anymachine.sh` daily and commits to `main` when `PIPELINE.md` changes; it re-enables itself each run so GitHub's 60-day inactivity cutoff doesn't stop it |
 
 `SKILL.md` in these folders is ours and is never overwritten. The anymachine `SKILL.md` quotes the upstream README's generated-mesh steps by hand; the workflow does not track those.
