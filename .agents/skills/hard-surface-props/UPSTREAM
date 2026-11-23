@@ -1,0 +1,7 @@
+repo=arjun988/blender-skills
+branch=main
+commit=904f095d8f36a6e72adaebb08d07f884a074743d
+path=LICENSE:vendor/LICENSE
+path=.claude/skills/hard-surface:vendor/hard-surface
+path=.claude/skills/vehicle-artist:vendor/vehicle-artist
+path=.claude/skills/rigging/references/mechanical-rig.md:vendor/rigging/references/mechanical-rig.md

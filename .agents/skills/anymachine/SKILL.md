@@ -5,7 +5,7 @@ description: Reference-first pipeline for building a machine or a many-part hard
 
 # AnyMachine
 
-Vendored from [apekshik/anymachine](https://github.com/apekshik/anymachine) (MIT). This skill fixes the **order of work**; `blender-3d-modeling` is how to do each step in Blender, and `auditing-3d-geometry` gates any claim that the result is done or matches its references.
+Vendored from [apekshik/anymachine](https://github.com/apekshik/anymachine) (MIT). This skill fixes the **order of work**; `blender-3d-modeling` is how to do each step in Blender, and `auditing-3d-geometry` gates any claim that the result is done or matches its references. For surface technique (cutters, bevels, shading fixes) use `hard-surface-toolkit`. For art-directed props and vehicles use `hard-surface-props`. For parts that must be manufactured to dimension use `text-to-cad`.
 
 ## Pick the route
 

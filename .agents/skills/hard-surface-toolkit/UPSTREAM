@@ -1,0 +1,6 @@
+repo=scenario-labs/skills
+branch=main
+commit=3c4d18cd0be2e5280a5accebfeef9ddc98b9a15b
+path=LICENSE:vendor/LICENSE
+path=skills/dcc/blender/scenario-blender-hard-surface:vendor/scenario-blender-hard-surface
+path=skills/dcc/blender/scenario-blender-expert:vendor/scenario-blender-expert

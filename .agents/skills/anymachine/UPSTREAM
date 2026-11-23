@@ -1,2 +1,5 @@
 repo=apekshik/anymachine
+branch=main
 commit=d5e8889eef0b33e0bbe62ddca6f713f94b154b68
+path=PIPELINE.md:PIPELINE.md
+path=LICENSE:LICENSE
