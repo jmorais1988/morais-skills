@@ -60,6 +60,13 @@ jobs:
           git switch -c "$BRANCH"
           git add .agents/skills
           git commit -m "Sync upstream skills: $updated"
+          # Same content as the open PR already has: don't re-push or pay for another review.
+          if git fetch --quiet --depth=1 origin "$BRANCH" 2>/dev/null \
+             && [ "$(git rev-parse 'HEAD^{tree}')" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ] \
+             && gh pr view "$BRANCH" --json state -q .state 2>/dev/null | grep -q OPEN; then
+            echo "Open PR already has these changes"
+            exit 0
+          fi
           git push --force origin "$BRANCH"
           gh label create upstream-sync --color 0e8a16 2>/dev/null || true
           gh label create needs-attention --color d93f0b 2>/dev/null || true
