@@ -1,0 +1,35 @@
+name: Sync anymachine skill
+
+on:
+  schedule:
+    - cron: "17 5 * * *" # daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-anymachine
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pull PIPELINE.md from apekshik/anymachine
+        run: bash scripts/sync-anymachine.sh
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- .agents/skills/anymachine; then
+            echo "No changes"
+            exit 0
+          fi
+          commit=$(sed -n 's/^commit=//p' .agents/skills/anymachine/UPSTREAM)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add .agents/skills/anymachine
+          git commit -m "Sync anymachine PIPELINE.md to apekshik/anymachine@${commit:0:7}"
+          git push
