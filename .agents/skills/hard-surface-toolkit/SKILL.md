@@ -21,3 +21,8 @@ Vendored from [scenario-labs/skills](https://github.com/scenario-labs/skills) (M
 ## Trust
 
 `vendor/` is synced daily from upstream through a reviewed pull request (see README). Don't edit it here. Put local notes in this file.
+
+Local overrides:
+- When the Blender bridge refuses a call (quit, factory reset, deleting files), drop that action. Never rephrase the call to get it past the refusal.
+- Run `bx_audit.py --import` headless only. It calls `read_factory_settings`, which would wipe unsaved work in a live Blender.
+- Don't turn on paid Scenario generation, online access or extensions unless the person asks for it.
