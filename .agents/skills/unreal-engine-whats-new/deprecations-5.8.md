@@ -1,0 +1,745 @@
+# Deprecated in UE 5.8
+
+Generated on 2026-11-12 from the `UE_DEPRECATED(5.8, ...)` markers still present in the installed 5.9 headers (CL 60351404), for the modules a game project is likely to call. Each line is the header, the declaration that follows the marker (trimmed), and the engine's message, which names the replacement. Repeats of one message inside one header are folded into the first, with a count.
+
+Search this file for a header or symbol name; it is too long to read whole. A message that stops mid-sentence continues on the next source line: open the header.
+
+Limits: the engine has 2,570 such markers and this file covers 989 of them; search the engine for the rest. With no 5.7 install to diff against, API that 5.8 deleted outright (no marker left) is absent here unless [`features-5.8.md`](features-5.8.md) mentions it: when a symbol you remember is not found in the source, it is gone, so search for its replacement by concept.
+
+## Core
+
+- `AndroidJavaEnv.h`: `FMember(TConstructor<T, TArgs...>& Constructor, const char* = nullptr)` (+1 more): TConstructor<T(TArgs...) instead.
+- `ApplePlatformMemory.h`: `void SetAllocatorToUse() {}`: This doesn't belong in a public interface
+- `ExternalMutex.h`: `class TExternalMutex final`: Use TIntrusiveMutex.
+- `SortedMap.h`: `typedef typename TTypeTraits<KeyType >::ConstPointerType KeyConstPointerType;`: KeyConstPointerType is deprecated - use KeyInitType instead.
+- `StringConv.h`: `void InlineCombineSurrogates_Array(TArray<TCHAR, AllocatorType>& StrBuffer)`: Remove calls to this function because it does nothing.
+- `StripedMap.h`: `typedef typename BaseMapType::KeyConstPointerType KeyConstPointerType;`: KeyConstPointerType is deprecated - use KeyInitType instead.
+- `UnrealString.h`: `void InlineCombineSurrogates(FString& Str)`: Remove calls to this function because it does nothing.
+- `CoreGlobals.h`: `extern bool GEventDrivenLoaderEnabled;`: This variable is no longer set and will be removed.
+- `GenericPlatformCrashContext.h`: `void DumpAdditionalContext(const TCHAR* CrashFolderAbsolute);`: Use the overload with FAdditionalCrashContextParams
+- `GenericPlatformMemory.h`: `bool TracksLLMAllocations() { return false; }`: This workaround is now obsolete
+- `GenericPlatformMisc.h`: `bool HasNonoptionalCPUFeatures() { return false; }`: Replace HasNonoptionalCPUFeatures() with false.
+- `GenericPlatformMisc.h`: `bool NeedsNonoptionalCPUFeaturesCheck() { return false; }`: Replace NeedsNonoptionalCPUFeaturesCheck() with false.
+- `GenericPlatformMisc.h`: `bool Is64bitOperatingSystem()`: FPlatformMisc::Is64bitOperatingSystem is deprecated as UE only supports 64-bit.
+- `GenericPlatformMisc.h`: `float GetDeviceTemperatureLevel();`: GetDeviceTemperatureLevel() has been superseded by GetDeviceTemperature() and/or GetDeviceThermalState() because it's behavior was poorly defined (on android it returned temperature, on ios it returned a thermal status enum value).
+- `StringTableCore.h`: `bool ExportStrings(const FString& InFilename) const;`: ExportStrings is deprecated in favor of ExportStringsToCSVFile
+- `StringTableCore.h`: `bool ImportStrings(const FString& InFilename);`: ImportStrings is deprecated in favor of ImportStringsFromCSVFile
+- `IoDispatcher.h`: `FIoStoreEnvironment`: FIoStoreEnvironment is not used and is deprecated.
+- `IoDispatcher.h`: `FIoDispatcherMountedContainer`: FIoDispatcherMountedContainer is deprecated.
+- `IoDispatcher.h`: `FIoSignatureErrorEvent`: FIoSignatureErrorEvent is deprecated. Use FIoSignatureError.
+- `IoDispatcher.h`: `using FIoContainerMountedEvent =`: FIoContainerMountedEvent is deprecated
+- `IoDispatcher.h`: `using FIoContainerUnmountedEvent =`: FIoContainerUnmountedEvent is deprecated
+- `IOSPlatformCrashContext.h`: `NSOperatingSystemVersion OSXVersion;`: The OSXVersion property is no longer available. Use the already parsed version in string format
+- `App.h`: `//` (+9 more): @todo delta time refactor - deprecate this function
+- `ConfigCacheIni.h`: `Plugin = 20,`: DynamicLayerPriority::Plugin is deprecated, use EnginePlugin or ProjectPlugin instead
+- `ConfigHierarchy.h`: `//` (+1 more): Use DefaultPluginName instead
+- `CoreDelegates.h`: `FSimpleMulticastDelegate PreSlateModal;`: PreSlateModal has been deprecated. Please use PreSlateModalWithContext instead.
+- `CoreDelegates.h`: `FSimpleMulticastDelegate PostSlateModal;`: PostSlateModal has been deprecated. Please use PostSlateModalWithContext instead.
+- `CoreDelegates.h`: `FSimpleMulticastDelegate OnPostEngineInit;`: OnPostEngineInit has been deprecated. Please use GetOnPostEngineInit() instead.
+- `QueuedThreadPoolWrapper.h`: `class FQueuedThreadPoolTaskGraphWrapper final : public FQueuedThreadPool`: FQueuedThreadPoolTaskGraphWrapper is obsolete and will be removed
+- `StringBuilder.h`: `TStringBuilderBase()`: Use TStringBuilder<N> or T[CharType]StringBuilder<N> or TExternalStringBuilder<CharType>.
+- `MemoryLayout.h`: `uint8 IsInitialized : 1;`: IsInitialized is not used anymore
+- `IsMemberPointer.h`: `struct TIsMemberPointer` (+4 more): TIsMemberPointer has been deprecated, please use std::is_member_pointer instead.
+- `RefCounting.h`: `operator uint32() const`: Inspecting an object's refcount is deprecated.
+- `RefCounting.h`: `class FRefCountBase : public FRefCountedObject {};` (+1 more): `FRefCountedObject` is now thread-safe so use that instead.
+- `MemberFunctionPtrOuterDeprecated.h`: `struct TMemberFunctionPtrOuter;`: TMemberFunctionPtrOuter has been deprecated, please use TMemberPtrOuter instead.
+- `MemberFunctionPtrOuterDeprecated.h`: `template <typename ReturnType, typename ObjectType, typename... ArgTypes> struct TMemberFunctionPtrOuter<Re...` (+11 more): TMemberFunctionPtrOuter has been deprecated, use TMemberPtrOuter instead.
+- `MemberFunctionPtrOuterDeprecated.h`: `using TMemberFunctionPtrOuter_T = typename TMemberFunctionPtrOuter<T>::Type;`: TMemberFunctionPtrOuter_T has been deprecated, use TMemberPtrOuter_T instead.
+- `NameTypes.h`: `void AutoTest()`: Tests for FName are registered with both test frameworks now.
+- `ScriptDelegates.h`: `WeakPtrType& GetUObjectRef()` (+1 more): GetUObjectRef has been deprecated.
+- `ScriptDelegates.h`: `UE_REWRITE void ProcessMulticastDelegate(void* Parameters) const`: ProcessMulticastDelegate has been deprecated, please use ProcessDelegate instead.
+- `ScriptDelegates.h`: `TArray< typename UnicastDelegateType::WeakPtrType* > GetAllObjectRefsEvenIfUnreachable() const`: GetAllObjectRefsEvenIfUnreachable has been deprecated.
+- `WeakObjectPtrTemplates.h`: `[[nodiscard]] bool IsRemote() const`: Use GetResidence() instead.
+
+## CoreUObject
+
+- `RemoteObjectPrivate.h`: `void MarkAsRemote(UObject* Object, FRemoteServerId DestinationServerId);`: Use SetResidence(Object, EResidence::Remote, ResidentServerId) instead.
+- `RemoteObjectPrivate.h`: `void MarkAsLocal(UObject* Object);`: Use SetResidence(Object, EResidence::Local, FRemoteServerId::GetLocalServerId()) instead.
+- `AsyncPackageLoader.h`: `bool IsNativeCodePackage(UPackage* Package);` (+2 more): This method will be removed.
+- `StructTypeBitSet.h`: `int32 FindStructTypeIndex(const UStruct& InStructType) const` (+10 more): Use overload taking TNotNull
+- `StructUtilsTypes.h`: `struct FStructureToReinstantiateScope` (+3 more): Use FStructReinstancer instead.
+- `Class.h`: `bool SetEnums(TArray<TPair<FName, int64>>& InNames, ECppForm InCppForm, EEnumFlags InFlags = EEnumFlags::No...`: Use the SetEnums with the underlying type.
+- `EnumProperty.h`: `FEnumProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FEnumProperty(InOwn...`: FEnumProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `Field.h`: `FField* Construct(const FFieldVariant& InOwner, const FName& InName, EObjectFlags InFlags) const { return C...`: FFieldClass::Construct with InFlags is deprecated, remove that parameter.
+- `Field.h`: `EObjectFlags FlagsPrivate = {};`: FField::FlagsPrivate is deprecated, consider using FProperty::PropertyFlags instead.
+- `Field.h`: `FField(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FField(InOwner, InName) {}`: FField constructor with InObjectFlags is deprecated, remove that parameter.
+- `Field.h`: `void PostLoad() final {};`: FField::PostLoad is deprecated. It is never called.
+- `Field.h`: `void BeginDestroy() final {};`: FField::BeginDestroy is deprecated. It is never called.
+- `Field.h`: `void Bind() final {};`: FField::Bind is deprecated. It is never called.
+- `Field.h`: `FField* Construct(const FFieldVariant& InOwner, const FName& InName, EObjectFlags InFlags) { return Constru...` (+1 more): FField::Construct with InFlags is deprecated, remove that parameter.
+- `Field.h`: `FField* TryConstruct(const FName& FieldTypeName, const FFieldVariant& InOwner, const FName& InName, EObject...`: FField::TryConstruct with InFlags is deprecated, remove that parameter.
+- `Field.h`: `void SetFlagsTo(EObjectFlags NewFlags) {}`: FField::SetFlagsTo is deprecated, for FProperties consider using PropertyFlags instead.
+- `Field.h`: `EObjectFlags GetFlags() const { return RF_NoFlags; }`: FField::GetFlags is deprecated, for FProperties consider using PropertyFlags instead.
+- `Field.h`: `void SetFlags(EObjectFlags NewFlags) {}`: FField::SetFlags is deprecated, for FProperties consider using PropertyFlags instead.
+- `Field.h`: `void ClearFlags(EObjectFlags NewFlags) {}`: FField::ClearFlags is deprecated, for FProperties consider using PropertyFlags instead.
+- `Field.h`: `bool HasAnyFlags(EObjectFlags FlagsToCheck) const { return false; }`: FField::HasAnyFlags is deprecated, for FProperties consider using PropertyFlags instead.
+- `Field.h`: `bool HasAllFlags(EObjectFlags FlagsToCheck) const { return false; }`: FField::HasAllFlags is deprecated, for FProperties consider using PropertyFlags instead.
+- `Field.h`: `FField* Duplicate(const FField* InField, FFieldVariant DestOwner, const FName DestName, EObjectFlags FlagMa...`: FField::Duplicate with FlagMask and InternalFlagsMask is deprecated, remove those parameters.
+- `FieldPathProperty.h`: `FFieldPathProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FFieldPathProp...`: FFieldPathProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `Object.h`: `bool IsLocalizedResource() const;`: Use FPackageName::IsLocalizedPackage instead
+- `Object.h`: `UClass* RegenerateClass(UClass* ClassToRegenerate, UObject* PreviousCDO) { return nullptr; };` (+1 more): This function is now editor only
+- `Object.h`: `void ValidateGeneratedRepEnums(const TArray<struct FRepRecord>& ClassReps) const {}`: VALIDATE_CLASS_REPS is not defined
+- `ObjectHandle.h`: `bool IsObjectHandleRemote(FObjectHandle Handle)`: Use GetObjectHandleResidence() instead.
+- `ObjectMacros.h`: `PKG_DynamicImports = 0x10000000, ///< Obsolete`: This flag is now obsolete.
+- `ObjectMacros.h`: `RF_AllocatedInSharedPage =0x80000000, ///< Allocated from a ref-counted page shared with other UObjects`: This flag is now obsolete as the functionality is unnecessary.
+- `ObjectPtr.h`: `[[nodiscard]] bool IsRemote() const { return GetResidence() == EResidence::Remote; }` (+1 more): Use GetResidence() instead.
+- `PropertyOptional.h`: `FOptionalProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FOptionalProper...`: FOptionalProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `RemoteObject.h`: `FRemoteObjectStub(UObject* Object);`: Stubs should only be initialized with UObject properties when they are being added to the internal stub map.
+- `RemoteObject.h`: `bool IsRemote(FRemoteObjectId ObjectId);`: Use GetResidence(ObjectId) instead.
+- `RemoteObject.h`: `bool IsRemote(const FRemoteObjectStub* Stub);`: Use GetResidence(Stub) instead.
+- `RemoteObject.h`: `bool IsRemote(const UObject* Object);`: Use GetResidence(Object) instead.
+- `RemoteObjectTransfer.h`: `UE_FORCEINLINE_HINT bool IsRemote() const`: Use GetResidence(ObjectId) instead.
+- `RemoteObjectTypes.h`: `FRemoteObjectId Generate(UObjectBase* InObject, const TCHAR* InName, EInternalObjectFlags InInitialFlags = ...`: Use FRemoteObjectId::Generate(InObject, InName, InOuterPathName, InInitialFlags)
+- `TextProperty.h`: `FTextProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FTextProperty(InOwn...`: FTextProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FProperty(InOwner, InNa...`: FProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `TProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : TProperty(InOwner, InNa...`: TProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `TProperty_WithEqualityAndSerializer(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags)...`: TProperty_WithEqualityAndSerializer constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FNumericProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FNumericProperty...`: FNumericProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `TProperty_Numeric(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : TProperty_Numer...`: TProperty_Numeric constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FByteProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FByteProperty(InOwn...`: FByteProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FInt8Property(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FInt8Property(InOwn...`: FInt8Property constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FInt16Property(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FInt16Property(InO...`: FInt16Property constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FIntProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FIntProperty(InOwner...`: FIntProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FInt64Property(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FInt64Property(InO...`: FInt64Property constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FUInt16Property(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FUInt16Property(I...`: FUInt16Property constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FUInt32Property(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FUInt32Property(I...`: FUInt32Property constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FUInt64Property(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FUInt64Property(I...`: FUInt64Property constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FFloatProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FFloatProperty(InO...`: FFloatProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FDoubleProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FDoubleProperty(I...`: FDoubleProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FBoolProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FBoolProperty(InOwn...`: FBoolProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FObjectPropertyBase(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FObjectProper...`: FObjectPropertyBase constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `TFObjectPropertyBase(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : TFObjectProp...`: TFObjectPropertyBase constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FObjectProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FObjectProperty(I...`: FObjectProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FWeakObjectProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FWeakObjectPr...`: FWeakObjectProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FLazyObjectProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FLazyObjectPr...`: FLazyObjectProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FSoftObjectProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FSoftObjectPr...`: FSoftObjectProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FClassProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FClassProperty(InO...`: FClassProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FSoftClassProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FSoftClassProp...`: FSoftClassProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FInterfaceProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FInterfaceProp...`: FInterfaceProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FNameProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FNameProperty(InOwn...`: FNameProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FArrayProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags, EArrayPropertyFlags ...`: FArrayProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FMapProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags, EMapPropertyFlags InMa...`: FMapProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FSetProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FSetProperty(InOwner...`: FSetProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FStructProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FStructProperty(I...`: FStructProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FDelegateProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FDelegateProper...`: FDelegateProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FMulticastDelegateProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : FMulti...`: FMulticastDelegateProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `TProperty_MulticastDelegate(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : TProp...`: TProperty_MulticastDelegate constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FMulticastInlineDelegateProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : ...`: FMulticastInlineDelegateProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `FMulticastSparseDelegateProperty(FFieldVariant InOwner, const FName& InName, EObjectFlags InObjectFlags) : ...`: FMulticastSparseDelegateProperty constructor with InObjectFlags is deprecated, remove that parameter.
+- `UnrealType.h`: `void SetArrayIndexPerObject(TArrayView<const TMap<FString, int32>> InArrayIndices)` (+1 more): Use the TMap<FPropertyChangeEventContainerKey, int32> overload instead.
+- `UObjectGlobals.h`: `extern bool GIsSavingPackage;`: Use the IsSavingPackage() function instead.
+- `UObjectGlobals.h`: `void CancelAsyncLoading();`: This function is deprecated and will be removed. Do not use.
+- `UObjectGlobals.h`: `bool IsEventDrivenLoaderEnabled();`: This function is deprecated and will be removed. Use FPlatformProperties::RequiresCookedData() directly if appropriate.
+- `UObjectIterator.h`: `enum class EObjectIteratorThreadSafetyOptions : uint8`: EObjectIteratorThreadSafetyOptions should no longer be used. Use EGlobalObjectIteratorFlags instead.
+- `UObjectIterator.h`: `TObjectIteratorBase(UClass* InClass /*= UObject::StaticClass()*/, bool bOnlyGCedObjects /*= false*/, EObjec...`: TObjectIteratorBase with a boolean bOnlyGCedObjects has been deprecated - please use EObjectIteratorFlags enum instead
+- `UObjectIterator.h`: `TObjectIterator(bool bOnlyGCedObjects) requires std::is_same_v<const T, const UObject>`: TObjectIterator with a boolean bOnlyGCedObjects has been deprecated - please use EObjectIteratorFlags enum instead
+- `UObjectIterator.h`: `TObjectIterator(EObjectFlags AdditionalExclusionFlags, bool bIncludeDerivedClasses, EInternalObjectFlags In...`: TObjectIterator with a boolean bIncludeDerivedClasses has been deprecated - please use EObjectIteratorFlags enum instead
+- `UObjectIterator.h`: `TObjectRange(EObjectFlags AdditionalExclusionFlags, bool bIncludeDerivedClasses, EInternalObjectFlags InInt...`: TObjectRange with a boolean bIncludeDerivedClasses has been deprecated - please use EObjectIteratorFlags enum instead
+- `UObjectIterator.h`: `TObjectRange(bool bOnlyGCedObjects) requires std::is_same_v<const T, const UObject>`: TObjectRange with a boolean bOnlyGCedObjects has been deprecated - please use EObjectIteratorFlags enum instead
+- `WeakObjectPtr.h`: `UE_REWRITE bool IsRemote() const`: Use GetResidence() instead.
+
+## Engine
+
+- `BlendSpace.h`: `void TickFollowerSamples(`: Please use TickFollowerSamples() that takes in the blendspace's tick record.
+- `MirrorDataTable.h`: `void FindReplaceMirroredNames();`: Please use UpdateFromFindReplaceExpressions() instead.
+- `SmartName.h`: `struct FSmartNameMapping;` (+3 more): Smart names and their mappings are no longer used
+- `ActorComponent.h`: `FRegisterComponentContext& SetAsyncRegisterLevelContext(struct FAsyncRegisterLevelContext* Value);`: AsyncRegisterLevelContext has been removed.
+- `ComponentInterfaceIterator.h`: `TComponentInterfaceIterator(EObjectFlags AdditionalExclusionFlags, bool bIncludeDerivedClasses, EInternalOb...`: TComponentInterfaceIterator with a boolean bIncludeDerivedClasses has been deprecated - please use EObjectIteratorFlags enum instead
+- `ComponentInterfaces.h`: `void GetStreamableRenderAssetInfo(TArray<FStreamingRenderAssetPrimitiveInfo>& StreamableRenderAssets) const {}`: Override FPrimitiveSceneProxy::GetStreamableRenderAssetInfo or IPrimitiveComponent::GetStreamingRenderAssetInfo instead.
+- `InstancedStaticMeshComponent.h`: `TArray<FBodyInstance*> InstanceBodies;`: This member is no longer used. Use GetInstanceBodies() instead.
+- `InstancedStaticMeshComponent.h`: `void CalcAndCacheNavigationBounds();`: Navigation bounds are now lazily updated and no longer require explicit calls to update them.
+- `InstancedStaticMeshComponent.h`: `void InitInstanceBody(int32 InstanceIdx, FBodyInstance* InBodyInstance);` (+1 more): Use InstancePhysicsBodies instead.
+- `PrimitiveComponent.h`: `void GetStreamingRenderAssetInfoWithNULLRemoval(FStreamingTextureLevelContext& LevelContext, TArray<FStream...`: This has been replaced with LevelContext.GetStreamingRenderAssetInfoWithNULLRemoval
+- `PrimitiveComponent.h`: `void DispatchTouchOverEvents(ETouchIndex::Type FingerIndex, UPrimitiveComponent* CurrentComponent, UPrimiti...` (+2 more): Use overload with Touch ID, Player Controller, and Hit Result.
+- `SkeletalMeshComponent.h`: `uint8 bCollideWithAttachedChildren:1;`: bCollideWithAttachedChildren is deprecated. Use CollisionSources to add external collisions instead.
+- `SkeletalMeshComponent.h`: `void CopyClothCollisionsToChildren() {}`: CopyClothCollisionsToChildren has been deprecated. Use CollisionSources to add external collisions instead.
+- `SkeletalMeshComponent.h`: `void CopyChildrenClothCollisionsToParent(){}`: CopyChildrenClothCollisionsToParent has been deprecated. Use CollisionSources to add external collisions instead.
+- `SkeletalMeshComponent.h`: `void FindClothCollisions(FClothCollisionData& OutCollisions) const {}`: FindClothCollisions has been deprecated. Use CollisionSources to add external collisions instead.
+- `SkinnedMeshComponent.h`: `void AllowDuplicateTransformUpdates(bool bAllow);`: Duplicate transform control will be removed.
+- `SplineComponent.h`: `void SynchronizeSplines() {}`: SynchronizeSplines is deprecated.
+- `SplineComponent.h`: `void PopulateFromLegacy() {}`: PopulateFromLegacy is deprecated.
+- `SplineComponent.h`: `int32 SetFloatPropertyAtSplineInputKey(float InKey, float Value, FName PropertyName) const { return INDEX_N...`: SetFloatPropertyAtSplineInputKey is deprecated, please use AddFloatPropertyAtSplineInputKey
+- `ActorInstanceHandle.h`: `bool IsUnresolvedDehydratedActor() const;`: Detecting the ResolutionStatus of the pointer will be removed in a future release.
+- `Console.h`: `bool InputTouch(const FInputDeviceId DevideId, const uint32 Handle, const ETouchType::Type Type, const FVec...`: Use the overload that uses FTouchId instead
+- `EngineBaseTypes.h`: `double GetLastTickGameTime() const { return (InternalData ? InternalData->LastIntervalTickSeconds : -1.0); }`: Renamed because function only returns the correct time for functions with a TickInterval
+- `EngineBaseTypes.h`: `VMI_Lit_Wireframe = 37 UMETA(Hidden, DisplayName = "Lit Wireframe"),`: VMI_Lit_Wireframe is deprecated. Use VMI_Lit and FEngineShowFlags::SetMeshEdges
+- `EngineTypes.h`: `LOCAL_LIGHTS_BUFFER UMETA(hidden)`: Local Lights Buffer has been deprecated. For local lights heavy games, please use mobile deferred r.Mobile.ShadingPath=1
+- `GameEngine.h`: `void CreateGameViewportWidget( UGameViewportClient* GameViewportClient );`: Use parameterless overload instead
+- `GameViewportClient.h`: `FSceneViewport* CreateGameViewport(TSharedPtr<SViewport> InViewportWidget) final;`: Use CreateViewport instead
+- `GameViewportClient.h`: `void SetViewportFrame(FSceneViewport* InViewportFrame)`: UGameViewportClient::SetViewportFrame and FViewportFrame are deprecated. Use FSceneViewport/SetViewport.
+- `GameViewportClient.h`: `void SetViewport(FSceneViewport* InViewportFrame) final;`: If you must perform actions in response to the creation + assignment of this client's ISlateViewport, do so by overriding CreateGameViewport or AddAssociation
+- `GameViewportClient.h`: `void SetViewportOverlayWidget(TSharedPtr<SWindow> InWindow, TSharedRef<SOverlay> InViewportOverlayWidget);`: Call Bind and use overlay created by UGameViewportClient, instead of creating one externally.
+- `GameViewportClient.h`: `void SetGameLayerManager(TSharedPtr<IGameLayerManager> LayerManager);`: Call Bind and use layer manager created by UGameViewportClient, instead of creating one externally.
+- `GameViewportClient.h`: `FSceneViewport* ViewportFrame;`: ViewportFrame is deprecated. Use the Viewport member instead.
+- `LevelStreamingGCHelper.h`: `void TrashPackage(UPackage* InPackage);`: TrashPackage is deprecated.
+- `RendererSettings.h`: `EditCondition = "EarlyZPass == EEarlyZPass::OpaqueAndMasked",`: This option will be removed, and its behavior always enabled in a future release.
+- `Scene.h`: `uint8 bOverride_ScreenSpaceReflectionRoughnessScale:1;` (+8 more): Field will be removed
+- `Scene.h`: `float FilmGrainTexelSize_DEPRECATED;`: Use FilmGrainScale instead
+- `SkeletalMesh.h`: `TObjectPtr<UMeshDeformerCollection> TargetMeshDeformers;`: This must be protected for async build, always use the accessors even internally.
+- `StreamableRenderAsset.h`: `NaniteCoarseMesh ,`: NaniteCoarseMesh is now deprecated and will be removed.
+- `StreamableRenderAsset.h`: `bool HasPendingInitOrStreaming(bool /*bWaitForLODTransition*/) const`: HasPendingInitOrStreaming with the optional bool argument is deprecated. bWaitForLODTransition is unused. Remove it from the arguments list.
+- `StreamableRenderAsset.h`: `void WaitForPendingInitOrStreaming(bool /*bWaitForLODTransition*/)`: WaitForPendingInitOrStreaming with a single optional bool argument is deprecated. bWaitForLODTransition is unused. Call WaitForPendingInitOrStreaming with the optional ETickStreamingFlags argument.
+- `StreamableRenderAsset.h`: `void WaitForPendingInitOrStreaming(bool /*bWaitForLODTransition*/, bool bSendCompletionEvents)`: WaitForPendingInitOrStreaming with two optional bool arguments is deprecated. bWaitForLODTransition is unused. Call WaitForPendingInitOrStreaming with the optional ETickStreamingFlags argument.
+- `StreamableRenderAsset.h`: `void WaitForStreaming(bool /*bWaitForLODTransition*/)`: WaitForStreaming with a single optional bool argument is deprecated. bWaitForLODTransition is unused. Call WaitForStreaming with the optional ETickStreamingFlags argument.
+- `StreamableRenderAsset.h`: `void WaitForStreaming(bool /*bWaitForLODTransition*/, bool bSendCompletionEvents)`: WaitForStreaming with two optional bool arguments is deprecated. bWaitForLODTransition is unused. Call WaitForStreaming with the optional ETickStreamingFlags argument.
+- `StreamableRenderAsset.h`: `void TickStreaming(bool bSendCompletionEvents, TArray<UStreamableRenderAsset*>* DeferredTickCBAssets = null...`: WaitForStreaming with the optional bSendCompletionEvents bool argument is deprecated. Use the overload of TickStreaming which takes an ETickStreamingFlags argument.
+- `StreamableRenderAsset.h`: `bool HasPendingLODTransition() const { return false; }`: HasPendingLODTransition is deprecated and no longer called. Remove any remaining uses of this function.
+- `TextureLODSettings.h`: `int32 CalculateLODBias(int32 Width, int32 Height, int32 MaxSize, int32 LODGroup, int32 LODBias, int32 NumCi...`: Call newer version of function that takes MinSize.
+- `TextureStreamingTypes.h`: `void ProcessMaterial(const FBoxSphereBounds& ComponentBounds, const FPrimitiveMaterialInfo& MaterialData, f...`: The UPrimitiveComponent argument is no longer required
+- `World.h`: `void ChangeFeatureLevel(ERHIFeatureLevel::Type InFeatureLevel, bool bShowSlowProgressDialog = true, bool bF...`: ChangeFeatureLevel is deprecated, use ShaderPlatformChanged instead
+- `World.h`: `void InsertPostProcessVolume(IInterface_PostProcessVolume* InVolume);`: Use AddPostProcessVolume(TWeakInterfacePtr<IInterface_PostProcessVolume>): for memory-safety, all IInterface_PostProcessVolume need to be UObject-based
+- `World.h`: `TArray<IInterface_PostProcessVolume*> PostProcessVolumes;`: Use GetPostProcessVolumeIterator() instead
+- `Actor.h`: `std::atomic_int32_t NumAlwaysVisibleComponents = 0;`: Use HasAlwaysVisibleComponents/IncrementAlwaysVisibleComponents/DecrementAlwaysVisibleComponents instead.
+- `Actor.h`: `TArray<FActorDataLayer> DataLayers;`: Use DataLayerAssets instead.
+- `Actor.h`: `const FName GetDataLayerPropertyName() { return FName(); }`: FActorDataLayer is no longer in use.
+- `Character.h`: `TObjectPtr<UPrimitiveComponent> MovementBase = nullptr;`: This property has been deprecated. Please use PhysicsObjectOwner instead and use that to create a FMovementBaseInterfaceData. See ACharacter::OnRep_ReplicatedBasedMovement() for an example of this.
+- `Character.h`: `bool IsDynamicBase(const UPrimitiveComponent* MovementBase);` (+11 more): MovementBaseUtility functions using UPrimitiveComponents have been deprecated. Use functions using the FMovementBaseInterfaceData struct instead.
+- `Character.h`: `TObjectPtr<UPrimitiveComponent> MovementBase = nullptr;`: This property has been deprecated. Please use MovementBaseInterfaceData instead.
+- `Character.h`: `void SetBase(UPrimitiveComponent* NewBase, const FName BoneName = NAME_None, bool bNotifyActor=true);`: Movement base functions using UPrimitiveComponents have been deprecated. Use functions using the FMovementBaseInterfaceData struct instead.
+- `CharacterMovementComponent.h`: `UPrimitiveComponent* GetLastServerMovementBase() const { return Cast<UPrimitiveComponent>(LastMovementBaseI...`: Movement functions using UPrimitiveComponents have been deprecated (GetLastServerMovementBase included). Use GetLastServerMovementBaseInterfaceData instead.
+- `CharacterMovementComponent.h`: `TWeakObjectPtr<UPrimitiveComponent> LastServerMovementBase = nullptr;`: This property has been deprecated. Please use LastMovementBaseInterfaceData instead.
+- `CharacterMovementComponent.h`: `UPrimitiveComponent* GetMovementBase() const;`: GetMovementBase has been deprecated. Use GetMovementBaseObject cast if necessary instead.
+- `CharacterMovementComponent.h`: `void SetBase(UPrimitiveComponent* NewBase, const FName BoneName = NAME_None, bool bNotifyActor=true);` (+10 more): Movement functions using UPrimitiveComponents have been deprecated. Use functions using the FMovementBaseInterfaceData struct instead.
+- `CharacterMovementComponent.h`: `TWeakObjectPtr<UPrimitiveComponent> StartBase;`: This property has been deprecated. Please use StartMovementBaseInterfaceData instead.
+- `CharacterMovementComponent.h`: `TWeakObjectPtr<UPrimitiveComponent> EndBase;`: This property has been deprecated. Please use EndMovementBaseInterfaceData instead.
+- `CharacterMovementReplication.h`: `class UPrimitiveComponent* MovementBase;`: This property has been deprecated. Please use MovementBasePhysicsObjectOwner instead and use that to create a FMovementBaseInterfaceData. See UCharacterMovementComponent::ServerMove_PerformMovement for an example of this.
+- `CharacterMovementReplication.h`: `TObjectPtr<UPrimitiveComponent> NewBase;` (+1 more): This property has been deprecated. Please use NewMovementBasePhysicsObjectOwner instead and use that to create a FMovementBaseInterfaceData. See UCharacterMovementComponent::ClientHandleMoveResponse for an example of this.
+- `CheatManager.h`: `TObjectPtr<class ADebugCameraController> DebugCameraControllerRef;`: Use the FDebugCameraManager class instead
+- `Pawn.h`: `UPrimitiveComponent* GetMovementBase() const { return nullptr; }`: GetMovementBase is deprecated. Use GetMovementBaseObject or GetMovementBaseInterfaceData instead.
+- `PlayerController.h`: `bool InputTouch(`: Use the overload that uses FTouchId instead
+- `PlayerController.h`: `void ProcessTouchHitResult(const FInputDeviceId DeviceId, uint32 Handle, ETouchType::Type Type, const FVect...`: Use the overload with FTouchId instead
+- `PlayerInput.h`: `FVector Touches[EKeys::NUM_TOUCH_KEYS];`: Use GetTouchStates() instead
+- `PlayerInput.h`: `bool InputTouch(`: Use the overload that uses FTouchId instead
+- `KismetInputLibrary.h`: `int32 PointerEvent_GetTouchpadIndex(const FPointerEvent& Input);`: TouchpadIndex is was never fully implemented and has been retired.
+- `ExternalSpatialAccelerationPayload.h`: `bool PrePreQueryFilter(const void* QueryData) const { return false; }` (+1 more): This is deprecated in favor of PrePreFilter
+- `PhysicsBodyInstanceOwnerInterface.h`: `IPhysicsBodyInstanceOwner* GetPhysicsBodyInstandeOwnerFromHitResult(const FHitResult& Result)`: Use GetPhysicsBodyInstanceOwnerFromHitResult instead.
+- `PhysicsBodyInstanceOwnerInterface.h`: `IPhysicsBodyInstanceOwner* GetPhysicsBodyInstandeOwnerFromOverlapResult(const FOverlapResult& OverlapResult)`: Use GetPhysicsBodyInstanceOwnerFromOverlapResult instead.
+- `PhysicsBodyInstanceOwnerInterface.h`: `void GetComplexPhysicalMaterials(TArray<UPhysicalMaterial*>& OutPhysMaterials, TArray<FPhysicalMaterialMask...`: GetComplexPhysicalMaterials was removed.
+- `SoundGenerator.h`: `//` (+1 more): Synchronized audio task queues are deprecated.
+- `SoundModulationDestination.h`: `void UpdateModulators(const TSet<TObjectPtr<USoundModulatorBase>>& InModulators);` (+2 more): This function has been renamed SetModulators.
+- `SoundSourceBusSend.h`: `TOptional<float> LPFCutoffFrequency_DEPRECATED;`: Use bEnableLPFCutoff + LPFCutoff instead.
+- `SoundSourceBusSend.h`: `TOptional<float> HPFCutoffFrequency_DEPRECATED;`: Use bEnableHPFCutoff + HPFCutoff instead.
+- `SoundSubmixSend.h`: `TOptional<float> LPFCutoffFrequency_DEPRECATED;`: Use bEnableLPFCutoff + LPFCutoff instead.
+- `SoundSubmixSend.h`: `TOptional<float> HPFCutoffFrequency_DEPRECATED;`: Use bEnableHPFCutoff + HPFCutoff instead.
+- `SoundWave.h`: `FSoundWaveProxyPtr CreateSoundWaveProxy();`: Mutable access to proxy is deprecated. Use GetSoundWaveProxy()
+- `SoundWave.h`: `TArrayView<const uint8> GetZerothChunk(const FSoundWaveProxyPtr& SoundWaveProxy, bool bForImmediatePlayback...` (+34 more): The FSoundWaveProxy is now just a way to get a reference to the latest FSoundWaveData. Clients should hold onto the return value of GetSoundWaveDataRef() instead
+- `SoundWave.h`: `TSharedPtr<FSoundWaveData> GetSoundWaveData() const`: mutable access to sound wave data is deprecated. please use GetSoundWaveDataRef()
+- `SoundWaveProxyDecodeCache.h`: `TUniquePtr<ICompressedAudioInfo> CreateDecoderInstance(const FSoundWaveProxyRef& InSoundWaveProxy);`: Use the TSharedRef<const FSoundWaveData>& overload instead. The proxy is a broker for FSoundWaveData — pass the snapshot via InSoundWaveProxy->GetSoundWaveDataRef().
+- `SoundWaveProxyPlayer.h`: `bool SetSoundWave(FSoundWaveProxyPtr InWaveProxy);`: Please use the TSharedRef<const FSoundWaveData>& overload instead
+- `SoundWaveProxyReader.h`: `class FSoundWaveProxyReader`: Use FSoundWaveProxyPlayer instead.
+- `SoundWaveProxyReader.h`: `FSoundWaveProxyReader(FSoundWaveProxyRef InWaveProxy, const FSettings& InSettings);` (+1 more): Please use the FSoundWaveDataRef overload instead
+- `InstancedMeshComponentBodies.h`: `void InitInstanceBody(FBodyInstance* Body, FBodyInstance* ReferenceBody, int32 Idx,`: This method will be removed in a future release.
+- `CollisionStructure.h`: `class FCollisionStructure`: This was unused and will be removed
+- `SoundWaveProxyDecodeCacheDecoder.h`: `FSoundWaveProxyDecodeCacheDecoder(const FSoundWaveProxyRef& InWaveProxy);`: Use the TSharedRef<const FSoundWaveData>& overload instead.
+- `SoundWaveProxyDecodeCacheImpl.h`: `TUniquePtr<ICompressedAudioInfo> CreateDecoderInstance(const FSoundWaveProxyRef& InSoundWaveProxy);`: Use the TSharedRef<const FSoundWaveData>& overload instead.
+- `StreamingTexture.h`: `uint8 bIsVirtualTexture : 1;` (+10 more): Access these bits using SetFlag/GetFlag methods
+- `AnimCompressionTypes.h`: `void ClearCompressedBoneData();`: ClearCompressedBoneData is not intended for external use and will become private. Use Reset() to clear all compressed data.
+- `AnimCompressionTypes.h`: `void ClearCompressedCurveData();`: ClearCompressedCurveData is not intended for external use and will become private. Use Reset() to clear all compressed data.
+- `AnimTypes.h`: `void CollectMarkersInRange(float PrevPosition, float NewPosition, TArray<FPassedMarker>& OutMarkersPassedTh...`: Use flavor of CollectMarkersInRange() that takes in an UMirrorDataTable
+- `AudioDecompress.h`: `bool StreamCompressedInfo(const FSoundWaveProxyPtr& Wave, struct FSoundQualityInfo* QualityInfo);` (+2 more): Please use the TSharedRef<const FSoundWaveData>& overload instead
+- `AudioDecompress.h`: `bool StreamCompressedInfoInternal(const TSharedPtr<const FSoundWaveProxy>& InWaveProxy, struct FSoundQualit...`: Please use the const TSharedRef<const FSoundWaveData>& overload instead
+- `AudioDecompress.h`: `const FSoundWaveProxyPtr& GetStreamingSoundWave() const { const FSoundWaveProxyPtr EmptyProxy; return Empty...`: Use the GetStreamingSoundWaveData() instead, return value points to nullptr
+- `AudioDecompress.h`: `FSoundWaveProxyPtr StreamingSoundWave;`: Use StreamingSoundWaveData instead
+- `AudioStreamingCache.h`: `uint64 AddOrTouchChunk(const FChunkKey& InKey, const TSharedPtr<FSoundWaveData>& InSoundWavePtr, TFunction<...` (+6 more): Please use the TSharedRef<const FSoundWaveData>& overload instead
+- `CachedGeometry.h`: `FTransform LocalToWorld = FTransform::Identity;`: Use scene proxy transform instead.
+- `ChartCreation.h`: `float StartTemperatureLevel;`: StartTemperatureLevel has been superseded by StartTemperature and/or StartThermalState because it's behavior was poorly defined (on android it was temperature, on ios it was a thermal status enum value).
+- `ChartCreation.h`: `float StopTemperatureLevel;`: StopTemperatureLevel has been superseded by StopTemperature and/or StopThermalState because it's behavior was poorly defined (on android it was temperature, on ios it was a thermal status enum value).
+- `CollisionQueryParams.h`: `int32 GetAllObjectsQueryFlag()`: Use GetAllObjectsQueryFlag64
+- `CollisionQueryParams.h`: `int32 GetAllStaticObjectsQueryFlag()`: Use GetAllStaticObjectsQueryFlag64
+- `CollisionQueryParams.h`: `int32 GetAllDynamicObjectsQueryFlag()`: Use GetAllDynamicObjectsQueryFlag64
+- `CollisionQueryParams.h`: `int32 ObjectTypesToQuery = 0;`: Use Get/Set ObjectTypesToQuery instead.
+- `CollisionQueryParams.h`: `int32 GetQueryBitfield() const`: Use GetQueryBitfield64
+- `ContentStreaming.h`: `void AddForceInlineSoundWave(const TSharedPtr<FSoundWaveProxy>& SoundWave) { };` (+2 more): Please use the TSharedRef<const FSoundWaveData>& overload instead
+- `ContentStreaming.h`: `bool RequestChunk(const TSharedPtr<const FSoundWaveProxy>& SoundWave, uint32 ChunkIndex, TFunction<void(EAu...`: Please use the const TSharedRef<const FSoundWaveData>& overload instead, that will become pure virtual when this function is deleted
+- `ContentStreaming.h`: `FAudioChunkHandle GetLoadedChunk(const TSharedPtr<const FSoundWaveProxy>& SoundWave, uint32 ChunkIndex, boo...`: Please use the TSharedRef<const FSoundWaveData> overload instead
+- `ContentStreaming.h`: `void HandleStarvation(const TSharedPtr<FSoundWaveProxy>& SoundWave, const uint32 ChunkIndex, const uint32 I...`: Please use the const TSharedRef<const FSoundWaveData>& overload instead
+- `ContentStreaming.h`: `Nanite::FCoarseMeshStreamingManager* GetNaniteCoarseMeshStreamingManager() const;` (+1 more): Coarse Mesh Streaming is deprecated
+- `DebugViewModeHelpers.h`: `bool SupportDebugViewModes();` (+1 more): SupportDebugViewModes is deprecated, please use ForceEnableDebugViewSupport/ForceDisableDebugViewSupport instead.
+- `DummyViewport.h`: `FDummyViewport(FViewportClient* const Client);`: Use FDummyViewport() + SetViewportClient() or static Create(TStrongPtrVariant<FViewportClient>) instead
+- `DummyViewport.h`: `TUniquePtr<FDummyViewport> Create(FViewportClient* InClient);`: This is only for backward compatibility with other deprecated functions
+- `TypedElementWorldInterface.h`: `bool AddIgnoredElementToCollisionQueryParams(const FTypedElementHandle& InElementHandle, FCollisionQueryPar...`: The element handle is already included in TTypedElement access. Use the version of this function that does not take the FTypedElementHandle parameter.
+- `GPUSkinCache.h`: `extern int32 GEnableGPUSkinCache;`: Use FGPUSkinCache::IsGPUSkinCacheEnabled()
+- `InstancedSkinnedMeshSceneProxyDesc.h`: `FPrimitiveSceneProxy* CreateSceneProxy(const FInstancedSkinnedMeshSceneProxyDesc& Desc, bool bHideSkin, boo...`: MeshDesc now has MinLODLevel and InClampedLODIndex is unused
+- `LightSceneProxy.h`: `const ULightComponent* GetLightComponent() const { return LightComponent; }`: Use GetLightComponentId instead.
+- `Material.h`: `uint8 bUsedWithSkeletalMesh : 1;` (+27 more): Always use the GetUsageByFlag() accessor.
+- `Material.h`: `uint8 bEnableExecWire : 1;`: Experimental bEnableExecWire is no longer supported.
+- `Material.h`: `bool SetMaterialUsage(bool& bNeedsRecompile, EMaterialUsage Usage, UMaterialInterface* MaterialInstance = n...`: Use the new (virtual) implementation
+- `MaterialExpression.h`: `FSubstrateOperator* SubstrateGenerateMaterialTopologyTree(class FMaterialCompiler* Compiler, class UMateria...`: Please use SubstrateGenerateMaterialTopologyTree taking the FSubstrateTranslatorDataInterface parameter.
+- `MaterialExpressionSubstrate.h`: `extern int32 CompileSubstrateBlendFunction(FMaterialCompiler* Compiler, const int32 A, const int32 B, const...`: CompileSubstrateBlendFunction is deprecated and will be removed. Material attributes are no longer allowed to flow SubstrateData.
+- `MaterialExpressionSubstrate.h`: `FSubstrateOperator* SubstrateGenerateMaterialTopologyTreeCommon(` (+5 more): Please, SubstrateGenerateMaterialTopologyTreeCommon taking the FSubstrateTranslatorData parameter.
+- `MaterialExpressionTextureBase.h`: `EMaterialSamplerType GetSamplerTypeForTexture(const UTexture* Texture, bool ForceNoVT = false);`: Use MaterialExpressionUtils::GetSamplerTypeForTexture instead.
+- `MaterialExpressionTextureBase.h`: `bool VerifySamplerType(const FString& TexturePathName, EMaterialSamplerType CorrectSamplerType, bool bSRGB,...` (+1 more): Use MaterialExpressionUtils::VerifySamplerType instead.
+- `MaterialFunction.h`: `uint8 bEnableExecWire_DEPRECATED : 1;`: Experimental bEnableExecWire is no longer supported.
+- `MaterialInstance.h`: `class FMaterialInstanceRenderProxy* Resource;`: Exposed public Instance Render Proxy derivative has been moved to protected. Please use either GetRenderProxy or GetInstanceRenderProxy.
+- `MaterialInstance.h`: `void GetBasePropertyOverridesHash(FSHAHash& OutHash) const`: Use parameterless version returning a uint64; SHA1 hashes are no longer used
+- `MaterialInterface.h`: `FTextureSamplingInfo CalculateTexturesSamplingInfo(UTexture* Texture) final { return FTextureSamplingInfo{}; }`: CalculateTexturesSamplingInfo is now const, returns bool, and takes an FTextureSamplingInfo out-parameter. Override the new signature instead.
+- `MaterialInterface.h`: `bool IsUsingNewTranslatorPrototype() const;`: Use IsUsingNewHLSLGenerator instead
+- `MaterialInterface.h`: `UToonProfile* GetToonProfileOverride_Internal() const;`: Deprecated, using toon profile parameters instead of a single override on instance.
+- `MaterialInterface.h`: `void PrecacheDefaultMaterialPSOs();`: Please use PrecacheFallbackMaterialPSOs which provides a MaterialInterface
+- `MaterialInterface.h`: `float GetTextureDensityWithCache(const FTextureSamplingInfo& TextureSamplingInfo, const FMeshUVChannelInfo&...`: Use FTextureSamplingInfo::GetTextureDensity(const FMeshUVChannelInfo&) on the FTextureSamplingInfo directly.
+- `MaterialRenderProxy.h`: `void AddToonProfileRT(const UToonProfile* Ptr) { }` (+2 more): Deprecated, using toon profile parameters instead of a single override on instance.
+- `MaterialShared.h`: `FMaterialShaderParameters(const FMaterial* InMaterial = nullptr);`: This will be moved under protected. Use FCompilationShaderParameters or FConservativeShaderParameters to create Shader Parameters.
+- `MaterialShared.h`: `void GetMaterialHash(FSHAHash& OutHash, bool bWithStaticParameters) const`: Use version returning uint64 (SHA1 hashes no longer used)
+- `MaterialShared.h`: `extern bool IsAllowedExpressionType(const UClass* Class, const bool bMaterialFunction);`: Should call UMaterialExpression::IsAllowedIn on the Class' DefaultObject
+- `MaterialShared.h`: `extern void GetMaterialValueTypeDescriptions(const uint32 MaterialValueType, TArray<FText>& OutDescriptions);`: Use the GetMaterialValueTypeDescriptions(EMaterialValueType...) overload instead
+- `MaterialShared.h`: `extern bool CanConnectMaterialValueTypes(const uint32 InputType, const uint32 OutputType);`: Use the CanConnectMaterialValueTypes(EMaterialValueType, EMaterialValueType) overload instead
+- `MaterialShared.h`: `void GetShaderTypes(const FPlatformTypeLayoutParameters& LayoutParams, TArray<FDebugShaderTypeInfo>& OutSha...`: Call GetShaderTypes with specialized ShaderParameters
+- `MaterialShared.h`: `TArrayView<const TObjectPtr<UObject>> GetReferencedTextures() const override;`: Please use the GetMatDefaultTextures for editor or GetMatDefaultTextureAtIdx for non-editor.
+- `NaniteSceneProxy.h`: `Nanite::CoarseMeshStreamingHandle CoarseMeshStreamingHandle = INDEX_NONE;`: Coarse Mesh Streaming is deprecated.
+- `EngineReplicationBridge.h`: `void AddRootObjectToLevelGroup(const UObject* RootObject, const ULevel* Level);`: Call AddRootObjectToContainerGroup instead.
+- `AsyncPhysicsStateProcessorInterface.h`: `void OnAsyncCreatePhysicsStateBegin_GameThread() {}`: Use OnAsyncCreatePhysicsStateBegin_GameThread with parameters instead
+- `AsyncPhysicsStateProcessorInterface.h`: `void OnAsyncDestroyPhysicsStateBegin_GameThread() {}`: Use OnAsyncDestroyPhysicsStateBegin_GameThread with parameters instead
+- `ChaosInterfaceWrapper.h`: `FQueryFilterData MakeQueryFilterData(const FCollisionFilterData& FilterData, EQueryFlags QueryFlags, const ...`: Use ChaosInterface::FSceneQueryCommonParams constructor instead.
+- `ChaosInterfaceWrapper.h`: `void LowLevelRaycast(const TContainer& Container, const FVector& Start, const FVector& Dir, float DeltaMag,...` (+2 more): This is meant to be internal only
+- `NetworkPhysicsComponent.h`: `const float GetCurrentInputDecay(const FNetworkPhysicsPayload* PhysicsData) { return GetCurrentInputDecay(); }`: Use function that doesn't take a parameter, the decay curve will be based on the current frame number compared with the latest input frame number available
+- `PhysicsFiltering.h`: `FPhysicsFilterBuilder(TEnumAsByte<enum ECollisionChannel> InObjectType, FMaskFilter MaskFilter, const struc...`: Use The constructor that takes a scene instead
+- `PhysicsFiltering.h`: `void ConditionalSetFlags(EPhysXFilterDataFlags Flag, bool bEnabled)`: Use SetFlags
+- `PhysicsFiltering.h`: `void GetQueryData(uint32 SourceObjectID, uint32& OutWord0, uint32& OutWord1, uint32& OutWord2, uint32& OutW...` (+2 more): Use GetCombinedShapeFilterData instead
+- `PhysicsFiltering.h`: `void CreateShapeFilterData(` (+2 more): Use FPhysicsFilterBuilder directly instead
+- `PhysicsFiltering.h`: `ECollisionChannel GetCollisionChannelAndExtraFilter(uint32 Word3, FMaskFilter& OutMaskFilter)`: Use the methods on Chaos::Filter::FShapeFilterData instead
+- `PhysicsFiltering.h`: `FCollisionResponseContainer ExtractSimCollisionResponseContainer(const FCollisionFilterData& InSimFilterData)` (+1 more): Use ExtractCollisionResponseContainer instead
+- `PrecomputedVolumetricLightmap.h`: `void HandleDataMovementInAtlas(int32 OldOffset, int32 NewOffset)`: HandleDataMovementInAtlas now requires a command list.
+- `PrecomputedVolumetricLightmap.h`: `void AddToSceneData(FPrecomputedVolumetricLightmapData* SceneData)`: AddToSceneData now requires a command list.
+- `PrecomputedVolumetricLightmap.h`: `void RemoveFromSceneData(FPrecomputedVolumetricLightmapData* SceneData, int32 PersistentLevelBrickDataBaseO...`: RemoveFromSceneData now requires a command list.
+- `PrecomputedVolumetricLightmap.h`: `void Insert(int32 Index, FPrecomputedVolumetricLightmapData* Data)`: Insert now requires a command list.
+- `PrecomputedVolumetricLightmap.h`: `void Remove(FPrecomputedVolumetricLightmapData* Data)`: Remove now requires a command list.
+- `PrimitiveSceneInfoData.h`: `mutable std::atomic<float> LastRenderTime = -1000.0f;`: Use GetLastRenderTime/SetLastRenderTime instead.
+- `PrimitiveSceneInfoData.h`: `mutable std::atomic<float> LastRenderTimeOnScreen = -1000.0f;`: Use GetLastRenderTimeOnScreen/SetLastRenderTimeOnScreen instead.
+- `PrimitiveSceneProxy.h`: `ERayTracingPrimitiveFlags GetCachedRayTracingInstance(struct FRayTracingInstance& OutRayTracingInstance);`: Use GetRayTracingPrimitiveFlags() and GetStaticRayTracingInstances() instead.
+- `PrimitiveSceneProxy.h`: `Nanite::CoarseMeshStreamingHandle GetCoarseMeshStreamingHandle() const { return INDEX_NONE; }`: Coarse Mesh Streaming is deprecated. Use reference based residency instead.
+- `PrimitiveSceneProxy.h`: `void OnDetachLight(const FLightSceneInfo* Light) final`: No longer called.
+- `PrimitiveSceneProxy.h`: `bool CanSkipRedundantTransformUpdates() const` (+3 more): Will be removed as it is not generally thread safe.
+- `PrimitiveSceneProxy.h`: `void SetDrawnInGame_RenderThread(bool bInDrawInGame) {}`: Use SetIsDrawn_RenderThread instead.
+- `PrimitiveSceneProxyDesc.h`: `bool ShouldRenderProxyFallbackToDefaultMaterial() const`: Use FPrimitiveSceneProxyDesc::UsePSOPrecacheFallbackMaterial() instead.
+- `PSOPrecacheComponent.h`: `extern bool ProxyCreationWhenPSOReady();`: ProxyCreationWhenPSOReady is deprecated - pleas use GetPSOPrecacheProxyCreationStrategy
+- `PSOPrecacheValidation.h`: `//` (+2 more): Identifying compute pipelines specifying only a shader is deprecated, use a FComputePipelineStateInitializer.
+- `NaniteCoarseMeshStreamingManager.h`: `class FCoarseMeshStreamingManager : public IStreamingManager`: Coarse Mesh Streaming is deprecated.
+- `SkeletalMeshLODRenderData.h`: `TArray<FMeshToMeshVertData> ClothMappingData_DEPRECATED;`: Use ClothMappingDataLODs instead.
+- `SkeletalMeshLODRenderData.h`: `mutable FTransactionallySafeCriticalSection RenderDataMutex;`: Temporary fix. Do not use in production code
+- `SkeletalMeshRenderData.h`: `bool RequiresCPUSkinning(ERHIFeatureLevel::Type FeatureLevel) const;` (+1 more): Always returns false. All platforms support 16-bit bone indices and sections are no longer split by bone count.
+- `SkeletalMeshRenderData.h`: `int32 GetMaxBonesPerSection() const;` (+1 more): Sections are no longer split by bone count. Use BoneMap.Num() on individual sections if needed.
+- `SceneInterface.h`: `void UpdateStaticDrawLists() {}`: No longer implemented. For similar use-cases refer to IRendererModule::UpdateStaticDrawListsForMaterials.
+- `SceneInterface.h`: `void UpdatePrimitivesDrawnInGame_RenderThread(TArrayView<FPrimitiveSceneProxy*> PrimitiveSceneProxies, bool...`: Use UpdatePrimitivesIsDrawn_RenderThread instead.
+- `SceneInterface.h`: `bool RequiresHitProxies() const = 0;`: No longer exposed, only used internally.
+- `SceneManagement.h`: `TArray<FMeshBatch> MeshBatches;`: Use MeshBatchesView instead. Allocate mesh batches from FRayTracingInstanceCollector::AllocateMeshBatchArray() for shared ownership.
+- `SceneView.h`: `const FMatrix& GetProjectionMatrix() const { return GetViewToClip(); }`: Use GetViewToClip() instead
+- `SceneView.h`: `const FMatrix& GetProjectionNoAAMatrix() const { return GetViewToClipNoAA(); }`: Use GetViewToClipNoAA() instead
+- `SceneView.h`: `const FMatrix& GetInvProjectionMatrix() const { return GetClipToView(); }`: Use GetClipToView() instead
+- `SceneView.h`: `const FMatrix& GetViewMatrix() const { return GetWorldToView(); }`: Use GetWorldToView() instead
+- `SceneView.h`: `const FMatrix& GetInvViewMatrix() const { return GetViewToWorld(); }`: Use GetViewToWorld() instead
+- `SceneView.h`: `const FMatrix& GetViewProjectionMatrix() const { return GetWorldToClip(); }`: Use GetWorldToClip() instead
+- `SceneView.h`: `const FMatrix& GetInvViewProjectionMatrix() const { return GetClipToWorld(); }`: Use GetClipToWorld() instead
+- `SceneView.h`: `const FMatrix& GetTranslatedViewProjectionMatrix() const { return GetTranslatedWorldToClip(); }`: Use GetTranslatedWorldToClip() instead
+- `SceneView.h`: `const FMatrix& GetInvTranslatedViewProjectionMatrix() const { return GetClipToTranslatedWorld(); }`: Use GetClipToTranslatedWorld() instead
+- `SceneView.h`: `const FMatrix& GetFirstPersonTransform() const { return GetWorldToFirstPerson(); }`: Use GetWorldToFirstPerson() instead
+- `SceneView.h`: `const FMatrix& GetInvFirstPersonTransform() const { return GetFirstPersonToWorld(); }`: Use GetFirstPersonToWorld() instead
+- `SkeletalMeshDeformerHelpers.h`: `FRHIShaderResourceView* GetMorphTargetBufferForReading(`: GetMorphTargetBufferForReading no longer requires section index and frame number.
+- `SkeletalMeshSceneProxy.h`: `FSkeletalMeshSceneProxy(const FSkinnedMeshSceneProxyDesc& InMeshDesc, FSkeletalMeshRenderData* InSkelMeshRe...`: MeshDesc now has MinLODLevel and InClampedLODIndex is unused
+- `SkeletalRenderPublic.h`: `const FSkinWeightVertexBuffer* GetSkinWeightVertexBuffer(int32 LODIndex) const { return nullptr; }`: Use GetSkinWeightVertexBuffer_RenderThread instead
+- `SkinnedMeshSceneProxyDesc.h`: `FPrimitiveSceneProxy* CreateSceneProxy(const FSkinnedMeshSceneProxyDesc& Desc, bool bHideSkin, int32 InClam...`: MeshDesc now has MinLODLevel and InClampedLODIndex is unused
+- `SceneViewport.h`: `FSceneViewport(FViewportClient* const Client, const TSharedPtr<SViewport>& Widget);` (+1 more): Use FViewport() + SetViewportClient or static Create(TStrongPtrVariant<FViewportClient>) instead
+- `SceneViewport.h`: `FViewport* GetViewport() { return this; }`: FSceneViewport::GetViewport() is deprecated because FViewportFrame is also deprecated. This function call is unnecessary and can be removed.
+- `SceneViewport.h`: `FViewportFrame* GetViewportFrame() override { return this; }`: FSceneViewport::GetViewportFrame() and FViewportFrame are deprecated. Use the scene viewport directly.
+- `StaticParameterSet.h`: `void UpdateHash(FSHA1& HashState) const {}` (+1 more): Use overload accepting an FXxHash64Builder; SHA1 hashes are no longer used
+- `StereoRenderTargetManager.h`: `bool AllocateRenderTargetTextures(uint32 SizeX, uint32 SizeY, uint8 Format, uint32 NumLayers, ETextureCreat...`: RHI command list is now a required argument
+- `RenderAssetOwnerStreamingState.h`: `mutable uint8 bAttachedToCoarseMeshStreamingManager : 1;` (+2 more): Coarse Mesh Streaming is deprecated.
+- `UnrealClient.h`: `using FViewportFrame = class FSceneViewport;`: FViewportFrame is deprecated. Use FSceneViewport instead.
+- `UnrealClient.h`: `FViewport(FViewportClient* const InClient);`: Use FViewport() + SetViewportClient or static Create(TStrongPtrVariant<FViewportClient>) instead
+- `UnrealClient.h`: `FViewportFrame* GetViewportFrame()`: FViewport::GetViewportFrame() and FViewportFrame are deprecated. Use FSceneViewport instead.
+- `UnrealClient.h`: `void SetViewportClient(ClientType* InViewportClient)`: Use SetViewportClient(const TStrongPtrVariant<FViewportClient>&) instead
+- `UnrealClient.h`: `FViewportClient* ViewportClient;`: Use Client instead
+- `UnrealClient.h`: `void Init(uint32 NewSizeX,uint32 NewSizeY);`: RHI command list is now a required argument
+- `ViewportClient.h`: `bool InputTouch(`: Use the overload that uses FTouchId instead
+- `DataLayerInstance.h`: `FName GetDataLayerFName() const { return GetFName(); }`: Use GetFName instead
+- `DataLayerManager.h`: `TArray<FName> GetDataLayerInstanceNames(const TArray<T>& InDataLayerIdentifiers) const { return {}; }`: This method is Tool-only since the removal of FActorDataLayer.
+- `DeprecatedDataLayer.h`: `struct FActorDataLayer;`: This class is deprecated and only present for backward compatibility purposes
+- `WorldDataLayers.h`: `void OverwriteDataLayerRuntimeStates(const TArray<T>* InActiveDataLayers, const TArray<T>* InLoadedDataLaye...`: Use SetDataLayerRuntimeState instead.
+- `WorldDataLayers.h`: `TMap<FName, TWeakObjectPtr<UDataLayerInstance>> DeprecatedDataLayerNameToDataLayerInstance_DEPRECATED;`: DeprecatedDataLayerNameToDataLayerInstance Property is no longer used.
+- `CustomHLODPlaceholderActor.h`: `typedef AWorldPartitionHLODSourceCellPlaceholder AWorldPartitionCustomHLODPlaceholder;`: AWorldPartitionCustomHLODPlaceholder has been renamed to AWorldPartitionHLODSourceCellPlaceholder
+- `CustomHLODPlaceholderActorDesc.h`: `typedef FHLODSourceCellPlaceholderActorDesc FCustomHLODPlaceholderActorDesc;`: FCustomHLODPlaceholderActorDesc has been renamed to FHLODSourceCellPlaceholderActorDesc
+- `HLODActor.h`: `uint32 GetHLODHash() const { return HLODHash_DEPRECATED; }` (+2 more): Hash data is now stored in a UHLODRebuildPolicyData object.
+- `HLODActor.h`: `void UpdateHLODBuildReportContent(const FString& InHLODBuildReportContent);`: Use override with no parameter.
+- `HLODBuilder.h`: `UWorld* World;`: Replaced by TargetWorld to disambiguate vs BuildWorld
+- `HLODSourceCellPlaceholderActor.h`: `const FGuid& GetCustomHLODActorGuid() const { return GetHLODActorGuid(); }`: GetCustomHLODActorGuid has been renamed to GetHLODActorGuid
+- `IWorldPartitionHLODUtilities.h`: `bool BuildHLOD(AWorldPartitionHLOD* InHLODActor) final`: Use the overload that passes a FHLODBuildParams
+- `WorldPartitionRuntimeHashSet.h`: `TSubclassOf<URuntimePartition> Class;`: This property is replaced by MainLayer
+- `WorldPartitionActorDesc.h`: `bool IsUsingDataLayerAsset() const { return true; }`: Actors no longer contain data layers without assets
+- `WorldPartitionActorDescInstance.h`: `bool IsUsingDataLayerAsset() const { return true; }`: Actors no longer contain data layers without assets
+- `WorldPartitionActorDescInstanceView.h`: `bool IsUsingDataLayerAsset() const override { return true; }`: Actors no longer contain data layers without assets
+- `WorldPartitionActorDescViewMap.h`: `class TActorDescViewMap`: This class is not used anymore
+- `WorldPartitionEditorPerProjectUserSettings.h`: `TArray<const UDataLayerInstance*> GetWorldDataLayersNotLoadedInEditor(UWorld* InWorld) const { return TArra...` (+1 more): Use GetWorldDataLayerAssetsNotLoadedInEditor instead.
+- `WorldPartitionEditorPerProjectUserSettings.h`: `TArray<const UDataLayerInstance*> GetWorldDataLayersLoadedInEditor(UWorld* InWorld) const { return TArray<c...` (+1 more): Use GetWorldDataLayerAssetsLoadedInEditor instead.
+
+## PhysicsCore
+
+- `ChaosInterfaceWrapperCore.h`: `using FQueryFilterData = FChaosQueryFilterData;`: Use ChaosInterface::FSceneQueryCommonParams instead.
+- `CollisionQueryFilterCallbackCore.h`: `class ICollisionQueryFilterCallbackBase : public ICollisionQueryFilterCallback`: Use ICollisionQueryFilterCallback instead
+- `CollisionQueryFilterCallbackCore.h`: `class FBlockAllQueryCallback : public ICollisionQueryFilterCallbackBase`: Use FBlockAllCollisionQueryFilterCallback instead
+- `CollisionQueryFilterCallbackCore.h`: `class FOverlapAllQueryCallback : public ICollisionQueryFilterCallbackBase`: Use FOverlapAllCollisionQueryFilterCallback instead
+- `PhysicsInterfaceTypesCore.h`: `FCollisionFilterData SimFilter;` (+2 more): Use the FilterInstanceData and Simple/Complex ShapeFilterData objects instead
+- `PhysicsInterfaceTypesCore.h`: `struct FChaosFilterData`: Use Chaos::Filter::FQueryFilterData instead
+- `PhysicsInterfaceTypesCore.h`: `struct FChaosQueryFilterData`: Use ChaosInterface::FSceneQueryCommonParams instead.
+- `PhysTestSerializer.h`: `void Serialize(Chaos::FChaosArchive& Ar);`: Use the Serializer that takes an FArchive
+- `PhysTestSerializer.h`: `FSQCapture& CaptureSQ()` (+2 more): FSQCapture is unused and will be removed
+- `SQAccelerator.h`: `void Raycast(const FVector& Start, const FVector& Dir, const float DeltaMagnitude, ChaosInterface::FSQHitBu...` (+5 more): Use the overload that takes ChaosInterface::FSceneQueryCommonParams instead
+- `SQAccelerator.h`: `class ISQAccelerator` (+1 more): This is unused and will be removed
+- `SQVerifier.h`: `void SQPerfComparisonHelper(const FString& TestName, FPhysTestSerializer& Serializer, bool bEnsureOnMismatc...` (+2 more): This is unused and will be removed
+- `SQVisitor.h`: `TSQVisitor(const FVector& InStartPoint, const FVector& InDir, ChaosInterface::FSQHitBuffer<THitType>& InHit...` (+3 more): Use the overload that takes a ChaosInterface::FSceneQueryCommonParams instead
+- `SQVisitor.h`: `TSQVisitor(const FTransform& InStartTM, const FVector& InDir, ChaosInterface::FSQHitBuffer<THitType>& InHit...` (+1 more): Use the overload that takes the QueryGeomWorldBounds
+- `SQVisitor.h`: `void SweepHelper(const QueryGeomType& QueryGeom, const Chaos::ISpatialAcceleration<TPayload, Chaos::FReal, ...` (+1 more): Use the overload that takes ChaosInterface::FSceneQueryCommonParams instead
+
+## NavigationSystem
+
+- `NavigationSystem.h`: `void LogNavDataRegistrationResult(ERegistrationResult);`: Use LogNavDataRegistrationResult receiving ANavigationData* instead.
+- `RecastNavMesh.h`: `void RegisterGeneratedLinksProxy();` (+1 more): Use the override using an FNavLinkGenerationJumpConfig instead.
+- `RecastNavMeshGenerator.h`: `void MarkDynamicAreas(dtTileCacheLayer& Layer);` (+2 more): Please use the overload with the added BuildContext.
+
+## AIModule
+
+- `EnvQueryGenerator_OnCircle.h`: `enum class EPointOnCircleSpacingMethod :uint8`: Use EEnvQueryPointSpacingMethod instead
+- `EnvQueryTest_Pathfinding.h`: `ANavigationData* FindNavigationData(UNavigationSystemV1& NavSys, UObject* Owner) const;`: Please use FEQSHelpers::FindNavigationDataForQuery instead
+
+## GameplayTags
+
+- `GameplayTagsManager.h`: `FSimpleMulticastDelegate& OnLastChanceToAddNativeTags();`: Replace with CallOrRegister_OnAddNativeTagsDelegate or call AddNativeGameplayTag directly, tags can be safely added after startup with default settings
+
+## UMG
+
+- `GameViewportSubsystem.h`: `UGameViewportSubsystem* Get(UWorld* World);`: Use the Get function which takes no arguments instead.
+
+## Slate and SlateCore
+
+- `TabManager.h`: `enum EWindowPlacement`: This enum will removed from the engine
+- `SCheckBox.h`: `TSlateDeprecatedTAttribute<FMargin> PaddingOverride;`: Use SetPaddingOverride / OnGetPadding / GetPaddingOverrideAttribute
+- `SCheckBox.h`: `TSlateDeprecatedTAttribute<FSlateColor> ForegroundColorOverride;`: Use SetForegroundColorOverride / GetForegroundColor / GetForegroundColorOverrideAttribute
+- `SCheckBox.h`: `TSlateDeprecatedTAttribute<FSlateColor> BorderBackgroundColorOverride;`: Use SetBorderBackgroundColorOverride / OnGetBorderBackgroundColor / GetBorderBackgroundColorOverrideAttribute
+- `SCheckBox.h`: `FSlateSound HoveredSound;`: Use GetHoveredSound / SetHoveredSound
+- `SCheckBox.h`: `FSlateSound CheckedSound;`: Use GetCheckedSound / SetCheckedSound
+- `SCheckBox.h`: `FSlateSound UncheckedSound;`: Use GetUncheckedSound / SetUncheckedSound
+- `SEditableText.h`: `TUniquePtr<FSlateEditableTextLayout> EditableTextLayout;`: Use SlateEditableTextLayout, this variable will never be set.
+- `SEditableText.h`: `TSlateDeprecatedTAttribute<FSlateFontInfo> Font;`: Use SetFont / GetFont / GetFontAttribute
+- `SEditableText.h`: `TSlateDeprecatedTAttribute<FSlateColor> ColorAndOpacity;`: Use SetColorAndOpacity / GetColorAndOpacity / GetColorAndOpacityAttribute
+- `SEditableText.h`: `TSlateDeprecatedTAttribute<const FSlateBrush*> BackgroundImageSelected;`: Use SetBackgroundImageSelected / GetBackgroundImageSelected / GetBackgroundImageSelectedAttribute
+- `SEditableText.h`: `TSlateDeprecatedTAttribute<bool> bIsReadOnly;`: Use SetIsReadOnly / IsTextReadOnly
+- `SEditableText.h`: `TSlateDeprecatedTAttribute<bool> bIsPassword;`: Use SetIsPassword / IsTextPassword / GetIsPasswordAttribute
+- `SEditableText.h`: `TSlateDeprecatedTAttribute<float> MinDesiredWidth;`: Use SetMinDesiredWidth / GetMinDesiredWidth / GetMinDesiredWidthAttribute
+- `SMenuAnchor.h`: `TSlateDeprecatedTAttribute<EMenuPlacement> Placement;`: Use SetMenuPlacement / GetPlacementAttribute
+- `SExpandableArea.h`: `void InvalidateStyle();`: Changing the style needs to update other properties. Use SetStyle if the style has changed
+- `SExpandableArea.h`: `void InvalidateBorderBrush();`: No need to call this function anymore, use SetBorderBrush
+- `SInlineEditableTextBlock.h`: `TSlateDeprecatedTAttribute<int32> MaximumLength;`: Use SetMaximumLength / GetMaximumLengthAttribute
+- `SlateEditableTextLayout.h`: `FSlateEditableTextLayout(RealWidgetType& InOwnerWidget, TAttribute<FText> InInitialText, FTextBlockStyle In...`: Use the other base constructor and call Construct during widget construction
+- `SlateEditableTextLayout.h`: `int32 GetTextLineCount()` (+1 more): Use the const version instead.
+- `SlateEditableTextLayout.h`: `void BeginEditTransation()`: Use the properly spelled version BeginEditTransaction
+- `SMultiLineEditableText.h`: `int32 GetTextLineCount()`: Use the const version instead.
+- `SMultiLineEditableText.h`: `TUniquePtr<FSlateEditableTextLayout> EditableTextLayout;`: Use SlateEditableTextLayout, this variable will never be set.
+- `SMultiLineEditableText.h`: `TSlateDeprecatedTAttribute<bool> bIsReadOnly;`: Use SetIsReadOnly / IsTextReadOnly
+- `SListView.h`: `TSlateDeprecatedTAttribute<int32> MaxPinnedItems;`: Use SetMaxPinnedItems / GetMaxPinnedItems / GetMaxPinnedItemsAttribute
+- `STableRow.h`: `TOptional<EItemDropZone> ItemDropZone;`: Use GetItemDropZone / SetItemDropZone / GetItemDropZoneAttribute.
+- `STableViewBase.h`: `TSlateDeprecatedTAttribute<ESelectionMode::Type> SelectionMode;`: Use Private_SetSelectionMode / GetSelectionMode / GetSelectionModeAttribute
+- `STableViewBase.h`: `FDeprecatedInvalidatableBrushAttribute BackgroundBrush;`: Use SetBackgroundBrush / GetBackgroundBrush / GetBackgroundBrushAttribute
+- `SlateFXBaseSubsystem.h`: `USlatePostBufferProcessor* GetPostProcessor(ESlatePostRT InSlatePostBufferBit);`: Use the overload that takes a UGameInstance*
+- `WidgetProxy.h`: `uint8 bIsInGameLayer : 1;`: Use methods instead of direct field access
+- `Events.h`: `FPointerEvent(` (+2 more): TouchpadIndex is was never fully implemented and has been retired.
+- `DrawElements.h`: `void SetIsInGameLayer(bool bInGameLayer);`: Use SetIsProjectContent from CustomPrepass instead
+- `DrawElements.h`: `bool GetIsInGameLayer();`: Renamed to IsInProjectContent
+- `RenderingCommon.h`: `void OnDrawViewport( const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect, class FSlateWindow...`: Override Paint instead; perform any teardown in the returned scope's destructor so it runs after child widgets paint.
+- `SlateRenderer.h`: `operator int32() const`: RegisterScene now returns an FSceneRegistrationScope instead of int32 index. If you need the index, call GetCurrentSceneIndex after registering.
+- `StyleColors.h`: `void InitalizeDefaults()`: Use the properly spelled version InitializeDefaults
+- `SlateFXSubsystem.h`: `TSharedPtr<FSlateRHIPostBufferProcessorProxy> GetPostProcessorProxy(ESlatePostRT InSlatePostBufferBit);`: Use the overload that takes a UGameInstance*
+- `SlateRHIPostBufferProcessor.h`: `class USlateRHIPostBufferProcessor : public UObject`: Use USlatePostBufferProcessor instead
+
+## MassEntity
+
+- `MassCommandBuffer.h`: `void AddFragment_RuntimeCheck(FMassEntityHandle Entity)`: Use AddFragment instead
+- `MassCommandBuffer.h`: `void RemoveFragment_RuntimeCheck(FMassEntityHandle Entity)`: Use RemoveFragment instead
+- `MassCommandBuffer.h`: `void AddTag_RuntimeCheck(FMassEntityHandle Entity)`: Use AddTag instead
+- `MassCommandBuffer.h`: `void RemoveTag_RuntimeCheck(FMassEntityHandle Entity)`: Use RemoveTag instead
+- `MassCommandBuffer.h`: `void SwapTags_RuntimeCheck(FMassEntityHandle Entity)`: Use SwapTags instead
+- `MassCommands.h`: `struct FMassCommandAddFragmentsInternal : public FMassBatchedEntityCommand` (+1 more): Use FMassCommandAddElements instead -- supports any mix of element types in a single operation.
+- `MassCommands.h`: `struct FMassCommandRemoveFragmentsInternal : public FMassBatchedEntityCommand` (+1 more): Use FMassCommandRemoveElements instead -- supports any mix of element types and performs a single entity move.
+- `MassEntityManager.h`: `void Initialize();`: Single threaded entity storage is being removed. Use Initialize(FMassEntityManagerStorageInitParams) with FMassEntityManager_InitParams_Concurrent instead.
+- `MassEntityManager.h`: `bool RemoveConstSharedFragmentFromEntity(const FMassEntityHandle EntityHandle, const UScriptStruct& ConstSh...` (+1 more): Use overload taking TNotNull
+- `MassEntityManager.h`: `void AddElementToEntities(TConstArrayView<FMassEntityHandle> Entities, TNotNull<const UScriptStruct*> Eleme...`: Use BatchAddElementToEntities instead
+- `MassEntityManager.h`: `void RemoveElementFromEntities(TConstArrayView<FMassEntityHandle> Entities, TNotNull<const UScriptStruct*> ...`: Use BatchRemoveElementFromEntities instead
+- `MassEntityManagerStorage.h`: `FMassEntityManager_InitParams_SingleThreaded {};`: Single threaded entity storage is being removed. Use FMassEntityManager_InitParams_Concurrent instead.
+- `MassEntityManagerStorage.h`: `FSingleThreadedEntityStorage final : public IEntityStorageInterface`: Single threaded entity storage is being removed. Use FConcurrentEntityStorage instead.
+- `MassEntitySettings.h`: `FOnInitialized& GetOnInitializedEvent()`: Use the instance method GetOnInitialized
+- `MassEntitySettings.h`: `bool IsInitialized()`: Use the instance method IsInitialized2
+- `MassEntityTypes.h`: `uint32 CalculateHash(const FMassFragmentBitSet& InFragments, const FMassTagBitSet& InTags`: This function is deprecated. Use FMassArchetypeCompositionDescriptor::CalculateHash() instead
+- `MassEntityTypes.h`: `auto& GetContainer()`: Mutable GetContainer is deprecated
+- `MassEntityTypes.h`: `FMassFragmentBitSet GetFragments() const;` (+4 more): Getting a subset of composition's bitsets is slow now. Consider refactoring your code to work directly on FMassElementBitSet
+- `MassEntityTypes.h`: `void SetFragments(const FMassFragmentBitSet& InBitSet);` (+4 more): Setting a subset of composition's bitsets is slow now. Consider refactoring your code to work directly on FMassElementBitSet
+- `MassEntityTypes.h`: `FMassSharedFragmentBitSet GetSharedFragmentBitSet() const` (+1 more): This function is deprecated. Use GetBitSet instead
+- `MassEntityTypes.h`: `void GetheredAffectedFragments(FMassFragmentBitSet& OutBitSet) const` (+1 more): Function name's spelling has been fixed. Use GatherAffectedFragments now
+- `MassExecutionContext.h`: `bool DoesArchetypeHaveElement(const UScriptStruct& ElementType) const` (+2 more): Use overload taking TNotNull
+- `MassExecutor.h`: `void RunSparse(FMassRuntimePipeline& RuntimePipeline, FProcessingContext& ProcessingContext, FMassArchetype...`: Use RunSparseEntities instead.
+- `MassExecutor.h`: `void RunSparse(FMassRuntimePipeline& RuntimePipeline, FProcessingContext& ProcessingContext, const FMassArc...`: Use RunWithCollection instead.
+- `MassObserverProcessor.h`: `TNotNull<const UScriptStruct*> GetObservedTypeChecked() const;`: UMassObserverProcessor::GetObservedTypeChecked is deprecated now. Use GetSingleObservedTypeChecked
+- `MassObserverProcessor.h`: `TObjectPtr<const UScriptStruct> ObservedType;`: UMassObserverProcessor::ObservedType is deprecated. Use ObservedTypes instead
+- `MassSubsystemAccess.h`: `FMassSubsystemAccess(UWorld* InWorld);`: Use FMassSubsystemAccess(FMassEntityManager*) constructor instead.
+- `TypeBitSetBuilder.h`: `int32 GetTypeIndex(const TUStructType& InStructType) const` (+1 more): Use overload taking TNotNull
+
+## MovieScene
+
+- `MovieScene.h`: `DECLARE_MULTICAST_DELEGATE_TwoParams(FMovieSceneOnChannelChanged, const FMovieSceneChannelMetaData* MetaDat...`: FMovieSceneOnChannelChanged is now deprecated. Use FMovieSceneOnChannelChangedWithTime
+- `MovieScene.h`: `FMovieSceneOnChannelChanged& OnChannelChanged() { return OnChannelChangedDelegate_DEPRACRATED; }`: FMovieSceneOnChannelChanged OnChannelChanged() is now deprecated. Use FMovieSceneOnChannelChangedWithTime OnChannelChangedWithTime()
+
+## EnhancedInput
+
+- `EnhancedInputModule.h`: `const FKey ComboKey;`: The combo trigger and key have been deprecated
+- `InputTriggers.h`: `struct FInputComboStepData` (+1 more): The Input combo trigger and related types are deprecated
+- `InputTriggers.h`: `class UInputTriggerCombo final : public UInputTrigger`: UInputTriggerCombo has been deprecated.
+- `EnhancedInputCustomizations.h`: `bool DoesTriggerArrayContainCombo() const;`: The combo trigger is now deprecated
+
+## StateTree
+
+- `StateTreeEditorData.h`: `void UpdateBindingsInstanceStructs()`: Use UpdateEditorBindings instead
+- `StateTreeEditorMode.h`: `uint32 EditorDataHash = 0;`: UStateTree::IsEditorDataDirty
+- `StateTreeEditorMode.h`: `bool bLastCompileSucceeded = true;`: UStateTree::CompileStatus
+- `StateTreeState.h`: `TStateTreeEditorNode<T>& AddCondition(TArgs&&... InArgs)`: Use AddConditionWithOuter that takes a TNotNull<UStateTreeState*> Outer.
+- `StateTreeCommonConditions.h`: `FStateTreeCompareIntCondition(const EGenericAICheck InOperator, const EStateTreeCompare InInverts = EStateT...` (+2 more): Use EComparisonOperator instead.
+- `StateTreeConditionHelpers.h`: `extern EComparisonOperator GenericAICheckToComparisonOperator(EGenericAICheck Operator);`: Use EComparisonOperator instead.
+- `StateTreeDelegates.h`: `DECLARE_DELEGATE_RetVal_OneParam(bool, FOnRequestCompile, UStateTree& /*StateTreeToCompile*/);` (+1 more): Use the UStateTreeEditingSubsystem to trigger a compilation.
+- `StateTreeEvaluatorBase.h`: `void AppendDebugInfoString(FString& DebugString, const FStateTreeExecutionContext& Context) const final`: Use the version with the FStateTreeReadOnlyExecutionContext.
+- `StateTreeExecutionContext.h`: `const FInstancedPropertyBag* GlobalParameters = nullptr;`: Use InitialGlobalParameters instead.
+- `StateTreeExecutionContext.h`: `EStateTreeRunStatus Start(const FInstancedPropertyBag* InitialGlobalParameters, int32 RandomSeed = -1);`: Use the version with the FStartParameters
+- `StateTreeExecutionContext.h`: `const FStateTreeExecutionFrame* FindFrame(const UStateTree* StateTree, FStateTreeStateHandle RootState, TCo...`: Use UE::StateTree::ExecutionContext::FindExecutionFrame instead.
+- `StateTreeExecutionContext.h`: `bool SetGlobalParameters(const FInstancedPropertyBag& Parameters);`: Use the version with a FConstStructView
+- `StateTreeExecutionContext.h`: `TOptional<int32> TriggerTransitionsFromFrameIndex;`: No longer used.
+- `StateTreeInstanceData.h`: `[[nodiscard]] FStateTreeDataView GetDataView(` (+1 more): Use the version without Parent Frame instead
+- `StateTreeInstanceData.h`: `void SetGlobalParameters(const FInstancedPropertyBag& Parameters);`: Use the version with a FConstStructView
+- `StateTreeNodeDescriptionHelpers.h`: `extern FText GetOperatorText(const EGenericAICheck Operator, EStateTreeNodeFormatting Formatting);`: Use GetOperatorText with EComparisonOperator instead.
+- `StateTreePropertyRef.h`: `T* GetMutablePtrToProperty(const FStateTreePropertyRef& PropertyRef, FStateTreeInstanceStorage& InstanceDat...`: Use the version with TemporaryStorage instead of ParentFrame
+- `StateTreePropertyRef.h`: `TTuple<T*...> GetMutablePtrTupleToProperty(const FStateTreePropertyRef& PropertyRef, FStateTreeInstanceStor...`: Use the version with ITemporaryStorage instead of ParentFrame
+- `StateTreePropertyRef.h`: `struct FStateTreePropertyRefExternalHandle` (+1 more): PropertyRefExternalHandle is deprecated. Use PropertyRef with ExecutionContext/StrongExecutionContext instead, which is a general async pattern for data access using Frame/StateID.
+
+## GameplayAbilities
+
+- `ActiveGameplayEffectHandle.h`: `FActiveGameplayEffectHandle(int32 InHandle)`: Use GenerateNewHandle (for properly constructed, valid handle) or GetInstantExecutedHandle (see comments)
+- `ActiveGameplayEffectHandle.h`: `void ResetGlobalHandleMap() {}` (+1 more): We no longer use a global TMap to get the Owning ASC. You can remove this function.
+- `AbilitiesGameplayEffectComponent.h`: `void GrantAbilities(FActiveGameplayEffectHandle ActiveGEHandle) const {}` (+1 more): Use the version that takes an FActiveGameplayEffect (because they may be PendingRemove by now, so the Handle won't resolve)
+
+## Niagara
+
+- `NiagaraComputeExecutionContext.h`: `std::atomic<uint32> CurrentNumInstances_RT = 0;`: Direct access of CurrentNumInstances_RT is deprecated please use the get / set methods
+- `NiagaraDataInterface.h`: `FName SourceDIName;`: Please update your API to use the get API to read SourceDIName
+- `NiagaraEmitter.h`: `std::atomic<bool> IsEstimationDirty = false;`: Direct use of IsEstimationDirty is deprecated please use the get / set methods
+- `NiagaraCommon.h`: `TOptional<EPixelFormat> BufferFormatToPixelFormat(ENiagaraGpuBufferFormat NiagaraFormat, EPixelFormatCapabi...` (+1 more): Please update your code to include the caller information.
+
+## PCG
+
+- `PCGComputeKernel.h`: `bool IsKernelDataValid(FPCGContext* InContext) const;`: Override IsKernelDataValid(const UPCGDataBinding*, FPCGContext*) instead.
+- `PCGComputeSource.h`: `FString GetShaderText() const { return GetSource(); }`: Use GetSourceText() instead
+- `PCGComputeSource.h`: `FString GetShaderFunctionsText() const { return {}; }`: Use GetFunctionsText() instead
+- `PCGComputeSource.h`: `void SetShaderFunctionsText(const FString& InText) {}`: Use SetFunctionsText() instead
+- `PCGComputeSource.h`: `bool IsShaderTextReadOnly() const { return false; }`: Use IsReadOnly() instead
+- `PCGDataBinding.h`: `TSet<FString> AdditionalTags;`: Use Tags field instead
+- `PCGDataBinding.h`: `void ReceiveDataFromGPU_GameThread(UPCGData* InData, const UPCGSettings* InProducerSettings, EPCGExportMode...` (+1 more): Use the version that takes a data description instead.
+- `PCGKernelHelpers.h`: `FCreateKernelParams(UObject* InObjectOuter, const UPCGSettings* InSettings = nullptr)`: Use the overload that takes a UPCGNode.
+- `IPCGRuntimePrimitiveFactory.h`: `int32 GetNumInstances(int32 InPrimitiveIndex) const { return 0; }`: Use version that takes cell ID instead
+- `PCGPrimitiveFactoryISMBase.h`: `TArray<FPCGProceduralISMComponentDescriptor> Descriptors;`: Use PrimitiveInfos instead
+- `PCGRenderTargetData.h`: `void Initialize(UTextureRenderTarget2D* InRenderTarget, const FTransform& InTransform, bool bInSkipReadback...`: bSkipReadbackToCPU has been removed. Use the overload without bSkipReadbackToCPU (readback is deferred). Call RequestCPUReadback to force immediate readback.
+- `PCGSplineInteriorSurfaceData.h`: `TArray<FVector2D> CachedSplinePoints2D;`: Not filled anymore, use CachedPolygon2D
+- `PCGTextureData.h`: `FIntPoint GetTextureSize() const { return GetResolution(); }`: Use GetResolution instead
+- `PCGTextureData.h`: `EPixelFormat GetTextureFormat() const { return Format; }`: Use GetFormat instead
+- `PCGTextureData.h`: `bool bSkipReadbackToCPU = false;`: bSkipReadbackToCPU has been removed. CPU readback is now always deferred.
+- `PCGTextureData.h`: `bool Initialize(UTexture* InTexture, uint32 InTextureIndex, const FTransform& InTransform, bool bCreateCPUD...` (+1 more): bSkipReadbackToCPU has been removed. CPU readback is now always deferred. Use the overload without bSkipReadbackToCPU.
+- `PCGTextureData.h`: `UPCGBaseTextureData() {}`: Use UPCGTexture2DSingleBaseData instead
+- `PCGWorldData.h`: `bool ExtractActorFiltersIfNeeded(const UPCGData* InData, TArray<TSoftObjectPtr<AActor>>& OutArray, FPCGCont...`: Use ExtractObjectFiltersIfNeeded instead
+- `PCGWorldData.h`: `bool ExtractLoadedActorFiltersIfNeeded(const UPCGData* InData, TSet<TObjectKey<AActor>>& OutSet, FPCGContex...`: Use ExtractLoadedObjectFiltersIfNeeded instead
+- `PCGWorldData.h`: `struct FPCGWorldQueryActorFilterCache`: Use FPCGWorldQueryFilterCache instead
+- `PCGWorldData.h`: `void Initialize(UWorld* InWorld, const FBox& InBounds = FBox(EForceInit::ForceInit)) {}` (+1 more): Use Initialize taking a IPCGGraphExecutionSource parameter instead
+- `PCGWorldData.h`: `TWeakObjectPtr<UWorld> World = nullptr;` (+1 more): Use GetWorld() instead
+- `PCGWorldData.h`: `TWeakObjectPtr<UPCGComponent> OriginatingComponent = nullptr;` (+1 more): Use OriginatingObject instead
+- `PCGWorldData.h`: `FPCGWorldQueryActorFilterCache ActorFilter;`: Use GetObjectFilter methods instead
+- `PCGWorldData.h`: `FPCGWorldQueryActorFilterCache ActorFilter;`: Use ObjectFilter instead
+- `PCGGetDataFunctionRegistry.h`: `const UPCGComponent* SourceComponent = nullptr;`: Use Source instead
+- `PCGMetadataOpElementBase.h`: `void AddDefaultValuesToCrc(FArchiveCrc32& Crc32) const {}`: No longer needed - default values are included in settings CRC automatically via UPROPERTY serialization.
+- `PCGActorSelector.h`: `bool IsMatching(const FPCGSelectionKey& InSelectionKey, const TSet<FName>& InRemovedTags, const TSet<UPCGCo...`: Replaced by the version using IPCGGraphExecutionSource.
+- `PCGGenerateLandscapeTextures.h`: `bool bSkipReadbackToCPU = false;`: bSkipReadbackToCPU has been removed. CPU readback is now always deferred.
+- `PCGGenerateLandscapeTextures.h`: `int32 NumGrassTypes = 0;` (+3 more): No longer used
+- `PCGGenerateLandscapeTextures.h`: `TWeakObjectPtr<ALandscapeProxy> LandscapeProxy = nullptr;`: Use Landscape
+- `PCGGenerateLandscapeTextures.h`: `TRefCountPtr<IPooledRenderTarget> HeightHandle = nullptr;` (+1 more): Replaced with FOutputTextureData
+- `PCGGenerateLandscapeTextures.h`: `TArray<TObjectPtr<ULandscapeGrassType>> GrassTypesToExport;`: Replaced with GrassNamesToExport
+- `PCGGenerateLandscapeTextures.h`: `TArray<TObjectPtr<ULandscapeGrassType>> GrassTypesToOutput;`: Replaced with GrassNamesToOutput
+- `PCGGetActorProperty.h`: `bool bForceObjectAndStructExtraction = false;`: Use the different extractor behavior options
+- `PCGGetPropertyFromObjectPath.h`: `bool bForceObjectAndStructExtraction = false;`: Use the different extractor behavior options
+- `PCGSceneCapture.h`: `bool bSkipReadbackToCPU = false;`: bSkipReadbackToCPU has been removed. CPU readback is now always deferred.
+- `PCGSortAttributes.h`: `FPCGAttributePropertyInputSelector InputSource;`: InputSource has been deprecated. Use SortAttributes.
+- `PCGSortAttributes.h`: `EPCGSortMethod SortMethod = EPCGSortMethod::Ascending;`: SortMethod has been deprecated. Use SortAttributes.
+- `PCGTextureSampler.h`: `bool bSkipReadbackToCPU = false;`: bSkipReadbackToCPU has been removed. CPU readback is now always deferred.
+- `PCGUserParameterGet.h`: `bool bForceObjectAndStructExtraction = false;` (+1 more): Use the different extractor behavior options
+- `PCGWorldRaycast.h`: `TSet<TObjectKey<AActor>> CachedFilterActors;`: Use CachedFilterObjects instead
+- `PCGGridDescriptor.h`: `EPCGHiGenGrid GetHiGenGrid() const { return PCGHiGenGrid::GridSizeToGrid(GetGridSize()); }`: Use GetGridSize
+- `PCGIOHelpers.h`: `struct FCustomExportVersion : Constants::FCustomExportVersion {};`: Use PCG::IO::Constants::FCustomExportVersion
+- `PCGJsonHelpers.h`: `void AppendHeader(const TSharedPtr<FJsonObject>& InOutJsonObject, int32 DataVersion, int32 CustomDataVersio...`: AppendHeader is deprecated, please use AppendVersionToHeader instead.
+- `PCGPropertyHelpers.h`: `bool bShouldExtract = false;`: Should set the enum EPCGStructExtractorBehavior/EPCGObjectExtractorBehavior
+- `PCGSettingsHelpers.h`: `TArray<FName> IncludeMetadataValues;` (+7 more): Replaced by custom logic in ShouldKeepPropertyFunc
+- `PCGAttributeAccessor.h`: `class FPCGAttributeAccessor : public FPCGAttributeGenericAccessor`: Use the Generic Accessor.
+- `PCGAttributeAccessorHelpers.h`: `TUniquePtr<IPCGAttributeAccessor> CreateAccessorWithAttributeCreation(UPCGData* InData, const FPCGAttribute...`: Use the version with the params
+- `PCGSplineAccessor.h`: `enum class EPCGSplineAccessorTarget`: Not used anymore. Replaced by EPCGSplineDataProperties
+- `PCGSplineAccessor.h`: `class FPCGSplineAccessor : public FPCGSplineAccessorV2<T, DeprecationSplineAccessorTarget<Target>()>`: Use FPCGSplineAccessorV2
+- `PCGAttributePropertySelector.h`: `//`: Make sure to use the string view version
+- `PCGMetadata.h`: `FPCGMetadataAttribute<T>* GetMutableTypedAttribute_Unsafe(FPCGAttributeIdentifier AttributeName);`: Should not be used anymore.
+- `PCGMetadata.h`: `bool ChangeAttributeType(FPCGAttributeIdentifier AttributeName, int16 AttributeNewType);`: Use the version with the Attribute Desc
+- `PCGMetadataAttribute.h`: `FPCGMetadataAttributeBase(FPCGMetadataDomain* InMetadata, FName InName, const FPCGMetadataAttributeBase* In...`: Metadata attributes should never be constructed individually and should be created from the Metadata domain.
+- `PCGMetadataAttributeTpl.h`: `FPCGMetadataAttribute(FPCGMetadataDomain* InMetadata, FName InName, const FPCGMetadataAttributeBase* InPare...` (+1 more): Metadata attributes should never be constructed individually and should be created from the Metadata domain.
+- `PCGMetadataAttributeTpl.h`: `FPCGMetadataAttributeBase* AllocateEmptyAttributeFromType(int16 TypeId)`: Should never be used anymore
+- `PCGMetadataDomain.h`: `FPCGMetadataAttribute<T>* GetMutableTypedAttribute_Unsafe(FName AttributeName);`: Should not be used anymore.
+- `PCGMetadataDomain.h`: `bool ChangeAttributeType(FName AttributeName, int16 AttributeNewType);`: Use the version with the Attribute Desc
+- `PCGObjectPropertyOverride.h`: `//` (+1 more): Use the Params version
+- `PCGObjectPropertyOverride.h`: `//`: Use Params version
+- `PCGCommon.h`: `extern TAutoConsoleVariable<bool> CVarReleaseTransientResourcesEarly;`: This feature is always enabled now
+- `PCGComponent.h`: `bool bRuntimeGenerated = false;`: No longer used.
+- `PCGComponent.h`: `bool IsObjectTracked(const UObject* InObject, bool& bOutIsCulled) const;`: No longer supported
+- `PCGComponent.h`: `TArray<TObjectPtr<UPCGManagedResource>> GeneratedResources_DEPRECATED;`: Moved to ManagedResourceContainer
+- `PCGComponent.h`: `void GenerateLocal(EPCGComponentGenerationTrigger RequestedGenerationTrigger, bool bForce, EPCGHiGenGrid Gr...` (+2 more): Use the version that takes uint32 grid size instead
+- `PCGComponent.h`: `EPCGHiGenGrid GetGenerationGrid() const { return PCGHiGenGrid::GridSizeToGrid(GetGenerationGridSize()); }`: Use GetGenerationGridSize
+- `PCGComponent.h`: `double GetGenerationRadiusFromGrid(EPCGHiGenGrid Grid) const { return GetGenerationRadiusFromGrid(PCGHiGenG...` (+1 more): Use version that takes uint32 grid size instead
+- `PCGComponent.h`: `struct FDynamicTrackedKeyInstanceData`: Use FPCGTrackedKeyInstanceData instead
+- `PCGContext.h`: `void* GetUnsafeExternalContainerForOverridableParam(const FPCGSettingsOverridableParam& InParam) { return n...`: You should use GetExternalStructContainerForOverridableParam for structs overrides.
+- `PCGData.h`: `bool HoldsTransientResources() const { return false; }`: No longer required
+- `PCGElement.h`: `EPCGCachingStatus RetrieveResultsFromCache(IPCGGraphCache* Cache, const UPCGNode* Node, const FPCGDataColle...`: Use BuildCacheParam/RetrieveResultsFromCache combination instead
+- `PCGGraph.h`: `bool bIsStandaloneGraph = false;`: Use GraphUsageContext instead.
+- `PCGGraph.h`: `FPCGStack GetInspectedStack() const;`: Compare using the IsSameInspectedStack method.
+- `PCGGraph.h`: `FPCGSelectionKeyToSettingsMap GetTrackedActorKeysToSettings() const { return GetTrackedSelectionKeysToSetti...` (+1 more): Use GetTrackedSelectionKeysToSettings instead
+- `PCGGraph.h`: `double GetGridGenerationRadiusFromGrid(EPCGHiGenGrid Grid) const { return GetGridGenerationRadiusFromGrid(P...` (+1 more): Use version that takes uint32 grid size instead
+- `PCGGraph.h`: `uint32 GetGridExponential() const { return FMath::RoundToInt(FMath::Log2(FMath::Max(HiGenGridSizeMultiplier...`: Use GetGridSizeMultiplier instead
+- `PCGGraph.h`: `bool bIsEditorOnly = false;`: Use ShouldCook instead
+- `PCGGraph.h`: `uint32 HiGenExponential = 0;`: Use HiGenGridSizeMultiplier instead
+- `PCGGraphExecutionInspection.h`: `const FPCGDataCollection* GetInspectionData(const FPCGStack& InStack) const { return nullptr;}`: Use GetInspectionDataPtr/InspectData instead
+- `PCGGraphExecutionStateInterface.h`: `FPCGTaskId GenerateLocalGetTaskId(EPCGHiGenGrid Grid = EPCGHiGenGrid::Uninitialized) { return InvalidPCGTas...`: Call/Implement Generate instead.
+- `PCGGraphExecutionStateInterface.h`: `void AddToManagedResources(UPCGManagedResource* InResource);`: Use GetManagedResourceContainer instead.
+- `PCGManagedResource.h`: `bool MoveResourceToNewActor(AActor* NewActor) { return false; };` (+1 more): Implement or use MoveResource instead.
+- `PCGSettings.h`: `void CreateKernels(FPCGGPUCompilationContext& InOutContext, UObject* InObjectOuter, TArray<UPCGComputeKerne...`: Override the overload that takes a UPCGNode.
+- `PCGSubgraph.h`: `const FString& UserParameterTagData = PCG::Private::UserParameterTagData;`: Use PCG::Private::UserParameterTagData
+- `PCGGenSourceBase.h`: `void Tick() {}`: Implement version that takes runtime generation context instead.
+- `PCGGenSourceManager.h`: `FPCGGenSourceManager(const UWorld* InWorld);`: Use constructor that takes runtime gen context.
+- `PCGRuntimeGenScheduler.h`: `UPCGComponent* GetOriginalComponent() const;`: Use GetOriginalSource() instead.
+- `PCGRuntimeGenScheduler.h`: `UPCGComponent* GetOriginalComponentEvenIfGarbage() const;`: Use GetOriginalSourceEvenIfGarbage() instead.
+- `PCGRuntimeGenScheduler.h`: `void SetOriginalComponent(UPCGComponent* InComponent);`: Use SetOriginalSource() instead.
+- `PCGRuntimeGenScheduler.h`: `IPCGGraphExecutionSource* GetCachedLocalComponent() const;`: Use GetCachedLocalSource() instead.
+- `PCGRuntimeGenScheduler.h`: `void SetCachedLocalComponent(IPCGGraphExecutionSource* InLocalComponent) const;`: Use SetCachedLocalSource() instead.
+- `PCGRuntimeGenScheduler.h`: `struct FTickQueueComponentsForGenerationInputs`: Use FTickQueueSourcesForGenerationInputs instead
+- `IPCGBaseSubsystem.h`: `UPCGComputeGraph* GetComputeGraph(const UPCGGraph* InGraph, uint32 GridSize, uint32 ComputeGraphIndex);`: Use FPCGContext::GetComputeGraph instead, which resolves from the executing graph's compiler cache.
+- `PCGEngineSubsystem.h`: `UPCGDefaultExecutionSource* CreateExecutionSource(const FPCGDefaultExecutionSourceParams& InParams);`: Use static IPCGBaseSubsystem version instead
+- `PCGSubsystem.h`: `FPCGTaskId ScheduleComponent(UPCGComponent* PCGComponent, EPCGHiGenGrid Grid, bool bForce, const TArray<FPC...`: Use the version that takes a uint32 Grid
+- `PCGSubsystem.h`: `void OnOriginalComponentRegistered(UPCGComponent* InComponent);`: Use OnOriginalExecutionSourceRegistered instead
+- `PCGSubsystem.h`: `void OnOriginalComponentUnregistered(UPCGComponent* InComponent);`: Use OnOriginalExecutionSourceUnregistered instead
+- `PCGSubsystem.h`: `bool RegisterOrUpdatePCGComponent(UPCGComponent* InComponent, bool bDoActorMapping = true);`: Use RegisterOrUpdateExecutionSource instead
+- `PCGSubsystem.h`: `bool RemapPCGComponent(const UPCGComponent* OldComponent, UPCGComponent* NewComponent, bool bDoActorMapping);`: Use RemapExecutionSource instead
+- `PCGSubsystem.h`: `void UnregisterPCGComponent(UPCGComponent* InComponent, bool bForce = false);`: Use UnregisterExecutionSource instead
+- `PCGSubsystem.h`: `TSet<UPCGComponent*> GetAllRegisteredPartitionedComponents() const;`: Use GetAllRegisteredPartitionedExecutionSources instead
+- `PCGSubsystem.h`: `TSet<UPCGComponent*> GetAllRegisteredComponents() const;`: Use GetAllRegisteredExecutionSources instead
+- `PCGSubsystem.h`: `TArray<UPCGComponent*> GetAllIntersectingComponents(const FBoxCenterAndExtent& InBounds) const;`: Use GetAllIntersectingExecutionSources instead
+- `PCGSubsystem.h`: `void ForAllIntersectingPartitionedComponents(const FBoxCenterAndExtent& InBounds, TFunctionRef<void(UPCGCom...`: Use ForAllIntersectingPartitionedExecutionSources instead
+- `PCGSubsystem.h`: `void RefreshRuntimeGenComponent(UPCGComponent* RuntimeComponent, EPCGChangeType ChangeType = EPCGChangeType...`: Use RefreshRuntimeGenExecutionSource instead
+- `PCGSubsystem.h`: `void RefreshAllRuntimeGenComponents(EPCGChangeType ChangeType = EPCGChangeType::None);`: Use RefreshAllRuntimeGenExecutionSources instead
+- `PCGSubsystem.h`: `void UpdateComponentTracking(IPCGGraphExecutionSource* InExecutionSource, bool bShouldDirtyActors, const TA...`: Use UpdateTracking instead
+- `PCGSubsystem.h`: `void ClearPCGLink(UPCGComponent* InComponent, const FBox& InBounds, AActor* InNewActor);`: Use the version with the move resource params.
+- `PCGSubsystem.h`: `void NotifyLandscapeEditModeExited() {}`: No longer used
+- `PCGSubsystem.h`: `FPCGOnPCGComponentUnregistered OnPCGComponentUnregistered;`: Deprecated in favor of OnPCGSourceUnregistered, will not be notified anymore
+- `PCGEditorInspectionDataManager.h`: `const FPCGDataCollection* GetInspectionData(const FPCGEditorInspectionDataEntrySetupParams& InParams) const...`: Use GetInspectionDataPtr/InspectData instead
+- `PCGEditorGraphNodeBase.h`: `EPCGHiGenGrid GetGenerationGrid() const { return PCGHiGenGrid::GridSizeToGrid(GenerationGridSize); }` (+1 more): Use GenerationGridSize
+- `PCGEditorGraphNodeBase.h`: `EPCGHiGenGrid GetInspectedGenerationGrid() const { return PCGHiGenGrid::GridSizeToGrid(InspectedGridSize); }`: Use GetInspectedGridSize
+- `PCGEditorGraphNodeBase.h`: `EPCGHiGenGrid InspectedGenerationGrid = EPCGHiGenGrid::Uninitialized;`: Use InspectedGridSize
+- `PCGEditor.h`: `enum class EPCGEditorPanel`: Use PCGEditorTabs instead
+- `PCGEditor.h`: `FLazyName HLSLSourceID = TEXT("HLSLSource");`: Use CodeEditorID instead.
+- `PCGEditor.h`: `UPCGEditorGraph* GetPCGEditorGraph() { return GetMainEditorGraph(); }`: Use GetMainEditorGraph/GetFocusedEditorGraph instead
+- `PCGEditor.h`: `const UPCGGraph* GetPCGGraph() { return GetMainGraph(); }`: Use GetMainGraph/GetFocusedGraph instead
+- `PCGEditor.h`: `FName GetPanelID(EPCGEditorPanel Panel) const;`: Use PCGEditorTabs directly
+- `PCGEditor.h`: `TSharedPtr<FWorkflowTabFactory> CreateNodeSourceTabFactory();`: Use CreateCodeEditorTabFactory() instead
+- `PCGEditor.h`: `void RegisterToolbarInternal(FToolMenuSection& PCGSection) const {}`: Implement version with FToolbarBuilder parameter instead
+- `PCGEditor.h`: `void RegisterToolbarButton(FToolMenuSection& Section, EPCGToolbarButtons Button) const {}`: Use version with FToolBarBuilder parameter instead
+- `PCGEditorSettings.h`: `bool bAutoRefreshGPUStaticMeshSpawners = true;`: Use UPCGGraph::bAutoRefreshOnRenderStateRefresh / bAutoRefreshOnQualitySettingsChanged on each graph instead.
+
+## CommonUI
+
+- `CommonGameViewportClient.h`: `DECLARE_DELEGATE_FiveParams(FOnRerouteTouchInputDelegate, FInputDeviceId /* Deviceid */, uint32 /* TouchId ...`: Use the version which takes an FTouchId instead (FTouchRerouteDelegate).
+- `CommonGameViewportClient.h`: `FOnRerouteTouchInputDelegate& OnRerouteTouchInput()`: Use GetRerouteTouchRegistration() instead.
+- `CommonGameViewportClient.h`: `void HandleRerouteTouch(FInputDeviceId DeviceId, uint32 TouchId, ETouchType::Type TouchType, const FVector2...`: Use the version which takes a FTouchId instead.
+- `CommonGameViewportClient.h`: `FOnRerouteTouchInputDelegate RerouteTouchInput;`: Use GetRerouteTouchDelegate() instead.
+
+## ModelViewViewModel
+
+- `MVVMFieldVariant.h`: `[[nodiscard]] bool HasAnyFlags(EObjectFlags InFlags) const`: TMVVMFieldVariant::HasAnyFlags is deprecated, it is only relevant for functions. Consider using GetFunction()->HasAnyFlags() after checking IsFunction() instead.
+
+## MassGameplay and MassAI
+
+- `MassActorSpawnerSubsystem.h`: `ESpawnRequestStatus SpawnOrRetrieveFromPool(FConstStructView SpawnRequestView, TObjectPtr<AActor>& OutSpawn...` (+1 more): Use the overload that accepts FSpawnArgs. OutSpawnedActor is equivalent to Args.Request.SpawnedActor
+- `MassDebuggerSubsystem.h`: `const TArray<FShapeDesc>* GetShapes() const`: Use ForEachShape instead.
+- `MassRepresentationFragments.h`: `TWeakObjectPtr<UMassRepresentationSubsystem> RepresentationSubsystem;`: Direct access to RepresentationSubsystem is deprecated. Use GetRepresentationSubsystem() instead.
+- `MassRepresentationFragments.h`: `mutable TWeakObjectPtr<UMassRepresentationActorManagement> CachedRepresentationActorManagement;`: Direct access to CachedRepresentationActorManagement is deprecated. Use GetCachedRepresentationActorManagement() instead.
+- `MassRepresentationSubsystem.h`: `TWeakObjectPtr<UMassVisualizationComponent> VisualizationComponent;`: Direct access to VisualizationComponent is deprecated. Use GetVisualizationComponent() instead.
+- `MassRepresentationSubsystem.h`: `TWeakObjectPtr<AMassVisualizer> Visualizer;`: Direct access to Visualizer is deprecated. Use GetVisualizer() instead.
+- `MassRepresentationSubsystem.h`: `AActor* GetOrSpawnActorFromTemplate(const FMassEntityHandle MassAgent, const FTransform& Transform, const i...`: Use GetOrRequestSpawnActorFromTemplate instead.
+- `MassVisualizationTrait.h`: `void SanitizeParams(FMassRepresentationParameters& InOutParams, const bool bStaticMeshDeterminedInvalid = f...`: Please use SanitizeMeshParams version for ISKM Support
+- `MassEntityTemplate.h`: `void AddFragment(const UScriptStruct& FragmentType)` (+5 more): Use overload taking TNotNull
+- `MassEntityTemplateRegistry.h`: `void AddTag(const UScriptStruct& TagType)` (+5 more): Use overload taking TNotNull
+- `MassTranslator.h`: `void AppendRequiredTags(FMassTagBitSet& InOutTags) const`: This function is deprecated, please fetch the tags directly with GetRequiredTags and append then wherever you want.
+
+## Metasound
+
+- `MetasoundDetailCustomization.h`: `bool IsGraphEditable() const;`: Use virtual IsEditable instead
+- `MetasoundEditorSettings.h`: `TMap<FName, FLinearColor> CustomPinTypeColors;`: Custom pin colors are now managed by FMetaSoundGraphPanelPinFactory. Use IMetaSoundGraphPanelPinFactory::GetPinColor instead.
+- `MetasoundEditorSettings.h`: `FLinearColor AssetReferenceNodeTitleColor;`: Asset nodes now use their corresponding asset type color.
+- `MetasoundEditorBuilderListener.h`: `void OnGraphInputDefaultChanged(int32 Index);`: Use the input default changed delegate that includes additional args
+- `MetasoundEditorBuilderListener.h`: `FOnMetaSoundBuilderGraphLiteralMutate OnGraphInputDefaultChangedDelegate;`: Use the GraphInputDefaultChanged delegate that includes additional args
+- `MetasoundEditorModule.h`: `const FEdGraphPinType* FindPinType(FName InDataTypeName) const = 0;`: Use IMetaSoundGraphPanelPinFactory::FindPinType instead.
+- `MetasoundEditorModule.h`: `bool GetCustomPinIcons(UEdGraphPin* InPin, const FSlateBrush*& PinConnectedIcon, const FSlateBrush*& PinDis...` (+1 more): Use IMetaSoundGraphPanelPinFactory::GetCustomPinIcons instead.
+- `MetasoundEditorModule.h`: `void RegisterPinType(FName InDataTypeName, FName InPinCategory = { }, FName InPinSubCategory = { },` (+1 more): Use IMetaSoundGraphPanelPinFactory::RegisterPin instead.
+- `MetasoundEditorSubsystem.h`: `UMetasoundEditorGraphMemberDefaultLiteral* CreateMemberMetadata(FMetaSoundFrontendDocumentBuilder& Builder,...`: Functionality is now private
+- `MetasoundEditorSubsystem.h`: `void InitAsset(UObject& InNewMetaSound, UObject* InReferencedMetaSound = nullptr, const bool bClearDocument...`: Use overload that is passed optional initialization arguments. Call SetSoundWaveSettingsFromTemplate directly if desired.
+- `MetasoundNodeConfigurationCustomization.h`: `using FMetaSoundNodeConfigurationDataDetails = FMetaSoundNodeConfigurationCustomization;`: FMetaSoundNodeConfigurationDataDetails has been renamed. Use FMetaSoundNodeConfigurationCustomization instead
+- `MetasoundBuilderBase.h`: `void SetConfigurationProperties(TFunctionRef<void(TStructView<FMetaSoundFrontendDocumentTemplate>)> SetProp...`: Use SetTemplateProperties() instead
+- `MetasoundWave.h`: `const FSoundWaveProxyPtr& GetSoundWaveProxy() const`: Use GetWaveProxy() instead, mutable proxy access is deprecated
+- `MetasoundWave.h`: `FSoundWaveProxy* operator->()`: Use GetWaveProxy() for non-const objects instead. (mutable proxy access is deprecated)
+- `MetasoundFrontendGraphController.h`: `bool RemoveNode(INodeController& InNode) override;`: Use the MetaSound Builder API
+- `MetasoundFrontendInvalidController.h`: `const FMetasoundFrontendGraphClassPresetOptions& GetInvalidGraphClassPresetOptions();`: Preset options are now serialized in the Preset MetaSound Template
+- `MetasoundFrontendInvalidController.h`: `const FMetasoundFrontendVersion& GetInterfaceVersion() const { return FMetasoundFrontendVersion::GetInvalid...` (+1 more): Controllers are being actively deprecated, and this call was not thread safe in certain contexts
+- `MetasoundFrontendInvalidController.h`: `bool RemoveNode(INodeController& InNode) override { return false; }`: Use the MetaSound Builder API
+- `MetasoundFrontendNodeClassRegistryPrivate.h`: `const FNodeClassInfo& GetClassInfo() const;`: Use GetFrontendClass() instead
+- `MetasoundFrontendNodeClassRegistryPrivate.h`: `void IterateRegistry(FIterateMetasoundFrontendClassFunction InIterFunc, EMetasoundFrontendClassType InClass...`: Use Metasound::Frontend::ISearchEngine instead.
+- `MetasoundFrontendInterfaceRegistry.h`: `bool IsValidInterfaceRegistryKey(const FInterfaceRegistryKey& InKey);` (+5 more): Interface keys are deprecated: Frontend Version is now directly used as hashable interface identifier
+- `MetasoundFrontendInterfaceRegistry.h`: `bool UpdateRootGraphInterface(FMetaSoundFrontendDocumentBuilder& InDocumentBuilder) const { return false; }`: Transform accessor must be thread safe, and thus a shared pointer is passed via 'GetUpdateTransform'
+- `MetasoundFrontendInterfaceRegistry.h`: `const IInterfaceRegistryEntry* FindInterfaceRegistryEntry(const FInterfaceRegistryKey& InKey) const { retur...`: Interface keys are deprecated: Frontend Version is now directly used as hashable interface identifier. In addition, direct access to entry is not thread safe, use FindInterface call instead.
+- `MetasoundAssetBase.h`: `const TSet<FSoftObjectPath>& GetAsyncReferencedAssetClassPaths() const`: Dynamic loading of referenced assets is deprecated
+- `MetasoundAssetBase.h`: `void OnAsyncReferencedAssetsLoaded(const TArray<FMetasoundAssetBase*>& InAsyncReferences) { }`: This is deprecated behavior and will become UE_INTERNAL API in a future release for back compat.
+- `MetasoundAssetBase.h`: `bool ImportFromJSON(const FString& InJSON);` (+1 more): Feature no longer supported
+- `MetasoundAssetBase.h`: `bool VersionAsset(FMetaSoundFrontendDocumentBuilder& Builder);`: Implementation is now internal and moved to VersioningManager.
+- `MetasoundAssetManager.h`: `void RequestAsyncLoadReferencedAssets(FMetasoundAssetBase& InAssetBase, const TSet<FSoftObjectPath>* Paths ...`: This is a deprecated feature, and exists to port old soft object references to hard references.
+- `MetasoundAssetManager.h`: `void ReloadMetaSoundAssets() const { ReregisterLoadedAssets(); }`: Use 'ReregisterLoadedAssets' instead.
+- `MetasoundConverterNodeRegistrationMacro.h`: `bool RegisterConversionNode(const Metasound::FVertexName& FromPin, const Metasound::FVertexName& ToPin, con...`: Converter node can be registered directly with the INodeClassRegistry in the owning modules startup/shutdown methods
+- `MetasoundFrontendController.h`: `const FMetasoundFrontendGraphClassPresetOptions& GetGraphPresetOptions() const;` (+4 more): Preset options are now serialized in the Preset MetaSound Template
+- `MetasoundFrontendController.h`: `bool RemoveVariable(const FGuid& InVariableID) { return false; }`: Use the MetaSound Builder API
+- `MetasoundFrontendController.h`: `bool ClearLiteralForInput(const FVertexName& InInputName, FGuid InVertexID) { return false; }`: Use Builder API instead
+- `MetasoundFrontendDocument.h`: `FMetasoundFrontendVersionNumber GetMaxVersion();`: MaxVersion is now externally accessible via FVersioningManager::GetMaxDocumentVersion()
+- `MetasoundFrontendDocument.h`: `bool RequiresInterfaceVersioning() const` (+1 more): Moved to internal implementation. See 'MigrateProperties'
+- `MetasoundFrontendDocumentAccessPtr.h`: `FClassAccessPtr GetClassWithInfo(const FNodeClassInfo& InInfo);` (+2 more): FNodeClassInfo is actively being deprecated, use overload with FNodeClassRegistryKey instead
+- `MetasoundFrontendDocumentBuilder.h`: `TTemplateType* GetDocumentConfigurationAs() { return GetTemplateAs<TTemplateType>(); }`: Use GetTemplateAs() instead
+- `MetasoundFrontendDocumentBuilder.h`: `bool ConvertFromPreset();` (+2 more): Use SetTemplate instead
+- `MetasoundFrontendDocumentBuilder.h`: `bool FindDeclaredInterfaces(const FMetasoundFrontendDocument& InDocument, TArray<const Metasound::Frontend:...` (+1 more): Direct access to IInterfaceRegistryEntry is deprecated as it is not thread safe. Must now get copy of interface directly from the InterfaceRegistry.
+- `MetasoundFrontendDocumentBuilder.h`: `int32 FindPageIndex(const FGuid& InPageID) const { return FindGraphPageIndex(InPageID); }`: Use 'FindGraphPageIndex' instead
+- `MetasoundFrontendDocumentBuilder.h`: `TConstStructView<FMetaSoundFrontendDocumentTemplate> GetConstDocumentConfiguration() const { return GetCons...`: Use GetConstDocumentTemplate() instead
+- `MetasoundFrontendDocumentBuilder.h`: `const TTemplateType* GetConstDocumentConfigurationAs() const { return GetConstTemplateAs<TTemplateType>(); }`: Use GetConstTemplateAs() instead
+- `MetasoundFrontendDocumentBuilder.h`: `FName GenerateUniqueInputName(const FString& InBaseName) const;` (+2 more): Use 'GenerateUniqueMemberName' instead, which protects against base names with invalid parameter characters.
+- `MetasoundFrontendDocumentBuilder.h`: `FMetasoundAssetBase* GetReferencedPresetAsset() const;`: Use Template API to access configuration as type FMetaSoundFrontendPresetTemplate and use the 'Parent' property directly.
+- `MetasoundFrontendDocumentBuilder.h`: `const TSet<FName>* GetGraphInputsInheritingDefault() const;`: Input inheritance data is now stored on MetaSound Preset template metadata.
+- `MetasoundFrontendDocumentBuilder.h`: `bool RemoveGraphInputDefault(FName InputName, const FGuid& InPageID, bool bClearInheritsDefault);`: Input inheritance data is now cached in MetaSound Preset template vertex metadata.  No need to call directly here. Use overload without 'bClearInheritsDefault' parameter.
+- `MetasoundFrontendDocumentBuilder.h`: `void SetDocumentConfiguration(TInstancedStruct<FMetaSoundFrontendDocumentTemplate> InConfig) { SetTemplate(...`: Use SetTemplate() instead
+- `MetasoundFrontendDocumentBuilder.h`: `void SetDocumentConfigurationProperties(TFunctionRef<void(TStructView<FMetaSoundFrontendDocumentTemplate>)>...` (+1 more): Use SetTemplateProperties() instead
+- `MetasoundFrontendDocumentBuilder.h`: `bool SetGraphInputInheritsDefault(FName InName, bool bInputInheritsDefault, bool bForceUpdate = false);` (+1 more): Input inheritance information moved to preset document template
+- `MetasoundFrontendDocumentModifyDelegates.h`: `typedef FOnDocumentTemplateChanged FOnDocumentConfigurationChanged;`: Use FOnDocumentTemplateChanged instead
+- `MetasoundFrontendDocumentModifyDelegates.h`: `typedef EDocumentTemplateChangeType EDocumentConfigChangeType;`: Use EDocumentTemplateChangeType instead
+- `MetasoundFrontendDocumentModifyDelegates.h`: `typedef FDocumentTemplateChangedArgs FDocumentConfigChangedArgs;`: Use FDocumentTemplateChangedArgs instead
+- `MetasoundFrontendNodeClassRegistry.h`: `const FNodeClassInfo& GetClassInfo() const { return FNodeClassInfo::GetInvalid(); }`: NodeClassInfo is actively being deprecated. Use FNodeClassRegistryKey instead (which can be generated from the frontend class)
+- `MetasoundFrontendNodeClassRegistry.h`: `FNodeClassRegistryTransaction(ETransactionType InType, const FNodeClassInfo& InNodeClassInfo, FTimeType InT...`: Use constructor providing RegistryKey instead as NodeClassInfo is actively being deprecated
+- `MetasoundFrontendNodeClassRegistry.h`: `const FNodeClassInfo& GetNodeClassInfo() const;`: NodeClassInfo is actively being deprecated. Use NodeRegistryKey instead (and SearchEngine to enquire about node class data via newer FMetaSoundClassInfo struct)
+- `MetasoundFrontendNodeClassRegistry.h`: `using FNodeRegistryTransaction = FNodeClassRegistryTransaction;`: FNodeRegistryTransaction is now FNodeClassRegistryTransaction
+- `MetasoundFrontendNodeClassRegistry.h`: `void IterateRegistry(FIterateMetasoundFrontendClassFunction InIterFunc, EMetasoundFrontendClassType InClass...`: This will be used internally only due to thread safety issues. Use Metasound::Frontend::ISearchEngine instead.
+- `MetasoundFrontendRegistryKey.h`: `FNodeClassRegistryKey(const FNodeClassInfo& InClassInfo);`: FNodeClassInfo is actively being deprecated, use overload with NodeClassRegistryKey or otherwise
+- `MetasoundFrontendSearchEngine.h`: `bool FindClassWithHighestMinorVersion(const FMetasoundFrontendClassName& InName, int32 InMajorVersion, FMet...`: Use FindRegisteredClass.  If a full class definition is required, use the resulting class info to look-up the class directly from the INodeClassRegistry.
+- `MetasoundFrontendSearchEngine.h`: `TArray<FMetasoundFrontendClass> FindAllClasses(bool bInIncludeAllVersions);`: Use FindAllClasses overload that returns ClassInfo instead
+- `MetasoundFrontendSearchEngine.h`: `TArray<FMetasoundFrontendInterface> FindAllInterfaces(bool bInIncludeAllVersions = false) { return { }; }`: Use FindAllInterfaceVersions instead, and refine results further if required using IInterfaceRegistry
+- `MetasoundFrontendTransform.h`: `class IGraphTransform` (+1 more): Use IBuilderTransform or similar instead
+- `MetasoundSendNode.h`: `const FVertexName& GetSendInputName()` (+1 more): This will no longer be supported
