@@ -1,0 +1,17 @@
+repo=iamvillain/SyntaxSplat
+branch=main
+commit=c940f5f5e1c9eb688c2bb271701eeb68fdf31934
+path=LICENSE:vendor/LICENSE
+path=CLAUDE.md:vendor/syntaxsplat/UPSTREAM-CLAUDE.md
+path=README.md:vendor/syntaxsplat/README.md
+path=docs:vendor/syntaxsplat/docs
+path=index.html:vendor/syntaxsplat/index.html
+path=main.js:vendor/syntaxsplat/main.js
+path=engine.js:vendor/syntaxsplat/engine.js
+path=worker.js:vendor/syntaxsplat/worker.js
+path=three.js:vendor/syntaxsplat/three.js
+path=cache.js:vendor/syntaxsplat/cache.js
+path=export.js:vendor/syntaxsplat/export.js
+path=particles.js:vendor/syntaxsplat/particles.js
+path=scenes:vendor/syntaxsplat/scenes
+path=tools:vendor/syntaxsplat/tools

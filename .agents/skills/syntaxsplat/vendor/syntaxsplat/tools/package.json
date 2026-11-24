@@ -1,0 +1,9 @@
+{
+  "name": "syntaxsplat-tools",
+  "private": true,
+  "type": "module",
+  "description": "Screenshot tool for authoring SyntaxSplat scenes",
+  "dependencies": {
+    "playwright": "^1.65.1"
+  }
+}

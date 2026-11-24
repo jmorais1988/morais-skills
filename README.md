@@ -12,6 +12,7 @@ Personal collection of AI agent skills. Each skill lives in `.agents/skills/<nam
 | `hard-surface-toolkit` | Cutters, bevels and weighted normals for hard-surface parts, with a bpy toolkit and shading gates |
 | `image-to-sculpt` | One image to a watertight sculpt measured against it, with registered generated views, Blender replay, films and exports |
 | `subagent-models` | Choosing model and reasoning effort for subagents |
+| `syntaxsplat` | Procedural Gaussian-splat scenes written as SDF code, with baked light, pixel-art pass and .ply export |
 | `text-to-cad` | When to use parametric CAD (build123d, STEP, manufacturing checks) instead of Blender, and how to install the text-to-cad plugin |
 | `unreal-engine-whats-new` | Unreal Engine 5.8/5.9 changes that postdate model training |
 
@@ -23,6 +24,7 @@ Personal collection of AI agent skills. Each skill lives in `.agents/skills/<nam
 | `hard-surface-toolkit` | [scenario-labs/skills](https://github.com/scenario-labs/skills) (MIT) | `vendor/`: `scenario-blender-hard-surface` and `scenario-blender-expert` (docs and bpy scripts), `LICENSE` |
 | `hard-surface-props` | [arjun988/blender-skills](https://github.com/arjun988/blender-skills) (MIT) | `vendor/`: `hard-surface`, `vehicle-artist`, `rigging/references/mechanical-rig.md`, `LICENSE` |
 | `image-to-sculpt` | [gokayfem/image-to-sculpt](https://github.com/gokayfem/image-to-sculpt) (MIT) | `vendor/`: `image-to-sculpt` (skill, references, templates, `i2s` CLI and Blender script), `LICENSE` |
+| `syntaxsplat` | [iamvillain/SyntaxSplat](https://github.com/iamvillain/SyntaxSplat) (MIT) | `vendor/`: the browser app (engine, scenes, docs, `tools/shoot.mjs`; not `screenshots/`), upstream `CLAUDE.md` as `UPSTREAM-CLAUDE.md`, `LICENSE` |
 | `text-to-cad` | [earthtojake/text-to-cad](https://github.com/earthtojake/text-to-cad) (MIT) | None. It's a plugin that needs its `cad` CLI, so the skill only routes to it and explains how to install it |
 
 Each skill's `UPSTREAM` file lists its repo, the commit the files match, and `path=<upstream>:<local>` lines. `scripts/sync-upstream.sh` mirrors those paths (sparse, shallow clone) and stores any vendored `SKILL.md` as `UPSTREAM-SKILL.md`, so agents don't load it as a second skill. Our own top-level `SKILL.md` is never overwritten. To vendor another skill, add an `UPSTREAM` file and run the script.
