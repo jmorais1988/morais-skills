@@ -1,0 +1,5 @@
+repo=gokayfem/image-to-sculpt
+branch=main
+commit=454381c13f2506b12d392e9286a8d32fc9549566
+path=LICENSE:vendor/LICENSE
+path=skills/image-to-sculpt:vendor/image-to-sculpt
