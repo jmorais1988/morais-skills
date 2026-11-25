@@ -97,8 +97,10 @@ frame strips show the order of the feet, how long each is in the air, when the b
 actions in the build script. The first walk moved one foot at a time; the clips showed overlapping steps, and the
 walk was rewritten.
 
-After every animation change, the clash check compares every part against every part on another bone through all
-actions and reports any intersection that is not there in the rest pose.
+After every animation change, use the clash check to compare parts on different groups across all actions.
+It flags new intersections and unusually large increases over the rest pose. The fast `check` samples every sixth
+frame; `check-strict` visits every integer frame and reports the results as JSON. See the README for the failure
+exit-code option.
 
 ### 10: export and verify
 
